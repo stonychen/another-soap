@@ -42,4 +42,4 @@ anotherSoap.bodyEntities = [
     },
   },
 ]
-console.log(formatter(anotherSoap.toXML(), { indentation: '  ' }))
+console.log(formatter(anotherSoap.toXML(), { indentation: '  ', collapseContent: true, }))
