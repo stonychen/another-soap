@@ -1,0 +1,37 @@
+{
+  "name": "typescript-sample",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./index.js",
+  "types": "./dist/index.d.ts",
+  "keywords": [
+    "typescript-sample"
+  ],
+  "scripts": {
+    "start": "tsc && node dist/index.js",
+    "build": "tsc -b",
+    "lint": "eslint src/**"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.7.0",
+    "@types/node": "^14.0.20",
+    "babel-eslint": "^10.1.0",
+    "core-js": "^3.6.5",
+    "eslint": "^7.8.1",
+    "typescript": "^3.9.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stonychen/typescript-sample.git"
+  },
+  "author": "Stony Chen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stonychen/typescript-sample/issues"
+  },
+  "homepage": "https://github.com/stonychen/typescript-sample#readme",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  }
+}

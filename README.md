@@ -1,1 +1,1 @@
-# node-another-soap
+# typescript-sample
