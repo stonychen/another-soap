@@ -12,7 +12,9 @@
     "build": "tsc -b",
     "lint": "eslint src/**"
   },
-  "dependencies": {},
+  "dependencies": {
+    "jssoup": "0.0.12"
+  },
   "devDependencies": {
     "@babel/core": "^7.7.0",
     "@types/node": "^14.0.20",
