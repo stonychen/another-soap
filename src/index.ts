@@ -1,4 +1,5 @@
 import AnotherSoap from './another-soap'
+import formatter = require('xml-formatter')
 
 const anotherSoap = new AnotherSoap()
 anotherSoap.method = "GetData"
@@ -41,4 +42,4 @@ anotherSoap.bodyEntities = [
     },
   },
 ]
-console.log(anotherSoap.toXML())
+console.log(formatter(anotherSoap.toXML(), { indentation: '  ' }))

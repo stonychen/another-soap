@@ -21,7 +21,8 @@
     "babel-eslint": "^10.1.0",
     "core-js": "^3.6.5",
     "eslint": "^7.8.1",
-    "typescript": "^3.9.6"
+    "typescript": "^3.9.6",
+    "xml-formatter": "^2.4.0"
   },
   "repository": {
     "type": "git",
