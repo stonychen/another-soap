@@ -91,8 +91,10 @@ export default class AnotherSoap {
       node === undefined ||
       node === ""
     ) {
+      const isNil = node === null ? ` i:nil="true"` : ""
+
       return nodeName
-        ? `</${temNs}${nodeName}>`
+        ? `<${temNs}${nodeName}${isNil}/>`
         : `<${this.arr}:string/>`
     }
 
@@ -121,9 +123,16 @@ export default class AnotherSoap {
 
 
     } else {
+      const val = typeof node === "string" ? node
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;') : node
+
       return nodeName
-        ? `<${temNs}${nodeName}${decNs}>${node}</${temNs}${nodeName}>`
-        : `<${this.arr}:${typeof node}>${node}</${this.arr}:${typeof node}>`
+        ? `<${temNs}${nodeName}${decNs}>${val}</${temNs}${nodeName}>`
+        : `<${this.arr}:${typeof node}>${val}</${this.arr}:${typeof node}>`
     }
   }
 
