@@ -1,5 +1,7 @@
 # another-soap
 
+<!-- 
+
 Input
 
 ``` typescript
@@ -81,4 +83,4 @@ Output
     </tem:GetData>
   </soapenv:Body>
 </soapenv:Envelope>
-```
+``` -->
