@@ -4,9 +4,8 @@
 name: Release package to npm
 
 on:
-  # release:
-  #   types: [created]
-  push:
+  release:
+    types: [published]
     branches:
       - master
 
