@@ -1,6 +1,6 @@
 import AnotherSoap from './another-soap'
-import parseXml from './parse-xml'
-import formatter = require('xml-formatter')
+// import parseXml from './parse-xml'
+// import formatter = require('xml-formatter')
 
 const anotherSoap = new AnotherSoap()
 anotherSoap.method = "GetData"
@@ -47,10 +47,10 @@ anotherSoap.bodyEntities = [
 ]
 
 const xml = anotherSoap.toXML()
-const beautifiedXML = formatter(xml, { indentation: '  ', collapseContent: true, })
+// const beautifiedXML = formatter(xml, { indentation: '  ', collapseContent: true, })
 // console.log(beautifiedXML)
 
-parseXml(beautifiedXML)
+// parseXml(beautifiedXML)
 
 
 

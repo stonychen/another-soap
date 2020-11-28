@@ -1,20 +1,18 @@
 {
-  "name": "typescript-sample",
+  "name": "node-another-soap",
   "version": "1.0.0",
   "description": "",
   "main": "./index.js",
   "types": "./dist/index.d.ts",
   "keywords": [
-    "typescript-sample"
+    "node-another-soap"
   ],
   "scripts": {
     "start": "tsc && node dist/index.js",
     "build": "tsc -b",
     "lint": "eslint src/**"
   },
-  "dependencies": {
-    "jssoup": "0.0.12"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.7.0",
     "@types/node": "^14.0.20",

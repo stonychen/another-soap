@@ -1,7 +1,8 @@
-# node-another-soap
+# another-soap
 
 Input
-```
+
+``` typescript
 import AnotherSoap from './another-soap'
 
 const anotherSoap = new AnotherSoap()
@@ -42,9 +43,9 @@ console.log(anotherSoap.toXML())
 
 ```
 
-
 Output
-```
+
+``` xml
 <?xml version="1.0" encoding="UTF-8"?>
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempurl.org/" xmlns:ent="http://schemas.datacontract.org/2004/07/ent.Entities" xmlns:arr="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
   <soapenv:Header/>

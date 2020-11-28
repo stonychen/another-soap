@@ -21,9 +21,9 @@ function parseXml(xml: string) {
     const currNode = matches.shift() as string
     const xmlNode = new XmlNode()
     xmlNode.selfCloseNode = /^<.+(\/\>)$/.test(currNode)
-    xmlNode.$tag =
+    // xmlNode.$tag =
 
-      stack.push(currNode)
+    stack.push(currNode)
   }
 }
 
