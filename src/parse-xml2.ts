@@ -24,6 +24,8 @@ function parseXml(xml: string) {
     // xmlNode.$tag =
 
     stack.push(currNode)
+
+    // release test
   }
 }
 
