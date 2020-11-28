@@ -12,6 +12,7 @@ on:
 
 jobs:
   release:
+    name: release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,7 +20,8 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
-      - run: npm publish --access public
+      - name: publish
+        run: npm publish --access public
         working-directory: ./
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
