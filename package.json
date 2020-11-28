@@ -1,11 +1,11 @@
 {
-  "name": "node-another-soap",
+  "name": "another-soap",
   "version": "1.0.0",
   "description": "",
-  "main": "./index.js",
+  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "keywords": [
-    "node-another-soap"
+    "another-soap"
   ],
   "scripts": {
     "start": "tsc && node dist/index.js",
@@ -24,14 +24,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/stonychen/typescript-sample.git"
+    "url": "git+https://github.com/stonychen/another-soap.git"
   },
   "author": "Stony Chen",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/stonychen/typescript-sample/issues"
+    "url": "https://github.com/stonychen/another-soap/issues"
   },
-  "homepage": "https://github.com/stonychen/typescript-sample#readme",
+  "homepage": "https://github.com/stonychen/another-soap#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   }
