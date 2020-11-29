@@ -20,7 +20,8 @@
     "lint": "eslint src/**"
   },
   "dependencies": {
-    "another-xml2json": "0.0.2"
+    "another-xml2json": "0.0.2",
+    "axios": "^0.21.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

@@ -1,11 +1,11 @@
-import SoapEntity from './soap-entity'
+import Entity from './entity'
 
-export default class AnotherSoap {
-  public firstLine = `<?xml version="1.0" encoding="UTF-8" ?>`
+class XmlDef {
+  public protocol = `<?xml version="1.0" encoding="UTF-8" ?>`
   public env: string = "soapenv";
   public envUrl: string = "http://schemas.xmlsoap.org/soap/envelope/";
 
-  public tem: string = "tem";
+  public tem: string = "";
   private _temUrl: string = ""
 
   set temUrl(val: string) {
@@ -17,20 +17,23 @@ export default class AnotherSoap {
     return this._temUrl ? this._temUrl : url
   }
 
-  public defaultEnt: string = "ent";
+  public defaultEnt: string = "";
   get defaultEntUrl(): string {
     return this.defaultEnt ? `http://schemas.datacontract.org/2004/07/${this.defaultEnt}.Entities` : ""
   }
 
-  public arr: string = "arr";
-  public arrUrl: string = "http://schemas.microsoft.com/2003/10/Serialization/Arrays";
-
-  public method: string = "GetData";
+  public arr: string = "";
+  private _arrUrl: string = ""
+  get arrUrl(): string {
+    let url = this.arr ? "http://schemas.microsoft.com/2003/10/Serialization/Arrays" : ""
+    return this._arrUrl ? this._arrUrl : url
+  }
+  public method: string = "";
   public methodNs?: string = ""
   public methodNsUrl?: string = ""
 
-  public headerEntities: Array<SoapEntity> = [];
-  public bodyEntities: Array<SoapEntity> = [];
+  public headerEntities: Array<Entity> = [];
+  public bodyEntities: Array<Entity> = [];
 
   public customNamespaces: string = ""
 
@@ -38,14 +41,14 @@ export default class AnotherSoap {
     const strHeader = this.encapsulateHeader()
     const strBody = this.encapsulateBody()
 
-    return this.firstLine + this.encapsulateEnvelope(strHeader + strBody)
+    return this.protocol + this.encapsulateEnvelope(strHeader + strBody)
   }
 
   private encapsulateEnvelope(inner: string) {
     const strEnv = this.env ? `xmlns:${this.env}="${this.envUrl}"  ` : ""
     const strTem = this.tem ? `xmlns:${this.tem}="${this.temUrl}" ` : ""
     const strEntities = this.defaultEnt ? `xmlns:${this.defaultEnt}="${this.defaultEntUrl}" ` : ""
-    const strArr = this.env ? ` xmlns:${this.arr}="${this.arrUrl}"  ` : ""
+    const strArr = this.arr ? ` xmlns:${this.arr}="${this.arrUrl}"  ` : ""
 
     return `<${this.env}:Envelope ${strEnv} ${strTem} ${strEntities} ${this.customNamespaces} ${strArr}>${inner}</${this.env}:Envelope>`
   }
@@ -68,18 +71,18 @@ export default class AnotherSoap {
 
     return `<${this.env}:Body><${tempTem}${this.method} ${decMethodNs}>${inner}</${tempTem}${this.method}></${this.env}:Body>`
   }
-  private encapsulateEntity(entities: Array<SoapEntity>): string {
+  private encapsulateEntity(entities: Array<Entity>): string {
     let tempTem = this.tem ? this.tem : ""
     tempTem = this.methodNs ? this.methodNs : tempTem
 
     return entities.map(item => {
-      return this.convert2xml("", "", item.name, item.object,
+      return this.generateXml("", "", item.name, item.object,
         item.ns ? "" + item.ns : this.defaultEnt,
         item.nsUrl, tempTem)
     }).join("")
   }
 
-  private convert2xml(parentStart: string, parentEnd: string, nodeName: string,
+  private generateXml(parentStart: string, parentEnd: string, nodeName: string,
     node: any, ns: string, nsUrl?: string, tem?: string,): string {
     let temNs = tem ? tem : ns
     temNs = temNs ? temNs + ":" : ""
@@ -100,7 +103,7 @@ export default class AnotherSoap {
 
     if (typeof node === "object" && Array.isArray(node)) {
       const inner = (node as Array<any>).map((item) => {
-        return this.convert2xml(parentStart, parentEnd, "", item, ns)
+        return this.generateXml(parentStart, parentEnd, "", item, ns)
       }).join("")
 
       return inner
@@ -109,7 +112,7 @@ export default class AnotherSoap {
 
     } else if (typeof node === "object" && !Array.isArray(node)) {
       const inner = Object.getOwnPropertyNames(node).map((item) => {
-        return this.convert2xml(parentStart, parentEnd, item, node[item], ns)
+        return this.generateXml(parentStart, parentEnd, item, node[item], ns)
       }).join("")
 
 
@@ -135,7 +138,10 @@ export default class AnotherSoap {
         : `<${this.arr}:${typeof node}>${val}</${this.arr}:${typeof node}>`
     }
   }
-
-  private handleArrayChildren() { }
 }
+
+
+export { XmlDef, Entity }
+
+
 
