@@ -1,26 +1,34 @@
 {
   "name": "another-soap",
-  "version": "1.0.2",
+  "version": "0.0.2",
   "description": "",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "keywords": [
+    "soap",
+    "xml",
+    "xml2json",
+    "xml parser",
+    "xml-parser",
+    "node-soap",
+    "node soap",
     "another-soap"
   ],
   "scripts": {
-    "start": "tsc && node dist/index.js",
+    "dev": "tsc && node dist/index.js",
     "build": "tsc -b",
     "lint": "eslint src/**"
   },
-  "dependencies": {},
+  "dependencies": {
+    "another-xml2json": "0.0.2"
+  },
   "devDependencies": {
-    "@babel/core": "^7.7.0",
-    "@types/node": "^14.0.20",
+    "@babel/core": "^7.12.9",
+    "@types/node": "^14.14.10",
     "babel-eslint": "^10.1.0",
-    "core-js": "^3.6.5",
-    "eslint": "^7.8.1",
-    "typescript": "^3.9.6",
-    "xml-formatter": "^2.4.0"
+    "core-js": "^3.8.0",
+    "eslint": "^7.14.0",
+    "typescript": "^3.9.7"
   },
   "repository": {
     "type": "git",

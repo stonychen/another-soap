@@ -36,5 +36,3 @@ const sample = `<Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelop
 `
 
 export default sample
-
-//.match(/(<|<\/)[^<\>]+(>|\/\>)/ig)

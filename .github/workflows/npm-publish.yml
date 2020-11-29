@@ -6,8 +6,6 @@ name: Release package to npm
 on:
   release:
     types: [published]
-    branches:
-      - master
 
 jobs:
   release:
@@ -21,6 +19,8 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
+      # - run: npm install
+      # - run: npm run build --if-present
       - name: publish
         run: npm publish --access public
         working-directory: ./

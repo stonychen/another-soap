@@ -4,8 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var another_soap_1 = __importDefault(require("./another-soap"));
-// import parseXml from './parse-xml'
-// import formatter = require('xml-formatter')
+var another_xml2json_1 = require("another-xml2json");
 var anotherSoap = new another_soap_1.default();
 anotherSoap.method = "GetData";
 // anotherSoap.defaultEnt = ""
@@ -48,5 +47,13 @@ anotherSoap.bodyEntities = [
 ];
 var xml = anotherSoap.toXML();
 // const beautifiedXML = formatter(xml, { indentation: '  ', collapseContent: true, })
-// console.log(beautifiedXML)
-// parseXml(beautifiedXML)
+// console.log(xml)
+console.log(JSON.stringify(another_xml2json_1.xml2json(xml, {
+    escape: true,
+    arrayNodes: [
+        /requestData\.bars$/,
+        /GetData\.requestData\.numbers$/,
+        /requestData\.booleans$/,
+        /Envelope.[\S]+.requestData.cars$/
+    ]
+})));

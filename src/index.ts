@@ -1,6 +1,5 @@
 import AnotherSoap from './another-soap'
-// import parseXml from './parse-xml'
-// import formatter = require('xml-formatter')
+import { xml2json } from 'another-xml2json'
 
 const anotherSoap = new AnotherSoap()
 anotherSoap.method = "GetData"
@@ -47,10 +46,16 @@ anotherSoap.bodyEntities = [
 ]
 
 const xml = anotherSoap.toXML()
-// const beautifiedXML = formatter(xml, { indentation: '  ', collapseContent: true, })
-// console.log(beautifiedXML)
 
-// parseXml(beautifiedXML)
+console.log(JSON.stringify(xml2json(xml, {
+  escape: true,
+  arrayNodes: [
+    /requestData\.bars$/,
+    /GetData\.requestData\.numbers$/,
+    /requestData\.booleans$/,
+    /Envelope.[\S]+.requestData.cars$/
+  ]
+})))
 
 
 

@@ -6,14 +6,20 @@
   "editor.formatOnSave": true,
   "editor.find.seedSearchStringFromSelection": false,
   "files.eol": "\n",
-  "files.exclude": {
-    "package-lock.json": true
-  },
+  "files.exclude": {},
   "files.associations": {
-    "*.ts": ["typescript"],
-    "*.tsx": ["typescriptreact"],
-    "*.js": ["javascript"],
-    "*.jsx": ["javascriptreact"]
+    "*.ts": [
+      "typescript"
+    ],
+    "*.tsx": [
+      "typescriptreact"
+    ],
+    "*.js": [
+      "javascript"
+    ],
+    "*.jsx": [
+      "javascriptreact"
+    ]
   },
   "files.insertFinalNewline": true,
   "workbench.colorCustomizations": {},
