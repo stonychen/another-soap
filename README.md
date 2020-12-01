@@ -19,6 +19,8 @@ soap.request("http://WebXml.com.cn/WebServices/WeatherWS.asmx", "post",
   console.log(err)
 })
 
+
+soap.xmlDef.method = "getRegionDataset"
 // soap.arrayNodes = [/getRegion$/]
 soap.request("http://WebXml.com.cn/WebServices/WeatherWS.asmx", "post",
   {
