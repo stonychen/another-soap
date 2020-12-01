@@ -50,7 +50,7 @@ var Soap = /** @class */ (function () {
         var xml = this.xmlDef.toXML();
         return new Promise(function (resolve, reject) {
             return axios_1.default(__assign(__assign({ url: url,
-                method: method }, options), { headers: __assign(__assign({ "Content-Type": "text/xml; charset=utf-8" }, headers), options.headers), data: xml })).then(function (res) {
+                method: method }, options), { headers: __assign(__assign({ "Content-Type": "text/xml; charset=utf-8" }, options.headers), headers), data: xml })).then(function (res) {
                 return resolve(another_xml2json_1.xml2json(res.data, {
                     escape: _this.escape,
                     arrayNodes: _this.arrayNodes
@@ -65,7 +65,7 @@ var soap = new Soap();
 soap.xmlDef.method = "getRegionCountry";
 soap.xmlDef.customNamespaces = "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"";
 soap.xmlDef.env = "soap";
-soap.arrayNodes = [/getRegionCountryResult$/];
+// soap.arrayNodes = [/getRegionCountryResult$/]
 soap.request("http://WebXml.com.cn/WebServices/WeatherWS.asmx", "post", {
     "Host": "www.webxml.com.cn",
     "SOAPAction": "http://WebXml.com.cn/getRegionCountry",
@@ -74,7 +74,7 @@ soap.request("http://WebXml.com.cn/WebServices/WeatherWS.asmx", "post", {
 }).catch(function (err) {
     console.log(err);
 });
-soap.arrayNodes = [/getRegion$/];
+// soap.arrayNodes = [/getRegion$/]
 soap.request("http://WebXml.com.cn/WebServices/WeatherWS.asmx", "post", {
     "Host": "www.webxml.com.cn",
     "SOAPAction": "http://WebXml.com.cn/getRegionDataset",
