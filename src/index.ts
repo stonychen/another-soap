@@ -1,99 +1,15 @@
 import "reflect-metadata"
 import axios, { AxiosRequestConfig } from "axios"
 import { xml2json } from "another-xml2json"
-
-enum NsType {
-  Namespace,
-  EntityNS,
-  XMLSchema,
-  XMLSchemaInstance,
-  Array,
-  Tem,
-  Undefined
-}
-
-
-function Xmlns(namespace: string, namespaceUrl: string, namespaceType: NsType = NsType.Undefined) {
-  return Reflect.metadata("xmlns:" + Math.random(), {
-    namespace,
-    namespaceUrl,
-    namespaceType
-  })
-}
-
-function XmlnsForParameters(index: number, name: string, nsList: IXmlns[]) {
-  return Reflect.metadata("xmlnsForParameters:" + Math.random(), {
-    index,
-    name,
-    nsList
-  })
-}
-
-
-interface IXmlns {
-  ns: string
-  nsUrl: string
-  nsType?: NsType
-}
-
-
-function getXmlns(target: SoapService, propertyKey: string = ""): IXmlns[] {
-  if (propertyKey) {
-    return Reflect.getMetadataKeys(target, propertyKey)
-      .filter(key => ("" + key).startsWith("xmlns:"))
-      .map(key => {
-
-        return Reflect.getMetadata(key, target, propertyKey)
-      })
-  } else {
-    return Reflect.getMetadataKeys(target)
-      .filter(key => ("" + key).startsWith("xmlns:"))
-      .map(key => {
-
-        return Reflect.getMetadata(key, target)
-      })
-  }
-}
-
-interface IXmlnsForParameters {
-  index: number,
-  name: string,
-  Nss: IXmlns[]
-}
-
-function getXmlnsForParameters(target: SoapService, propertyKey: string): IXmlnsForParameters[] {
-  return Reflect.getMetadataKeys(target, propertyKey)
-    .filter(key => ("" + key).startsWith("xmlnsForParameters:"))
-    .map(key => {
-
-      return Reflect.getMetadata(key, target, propertyKey)
-    })
-}
-
-
-function Protocol(val: string) {
-  return <T extends SoapService>(constructor: new () => T): new () => T => {
-    constructor.prototype.protocol = val
-    return constructor
-  }
-}
-
-
-const AxiosConfigKey = "AxiosConfigKey"
-
-function AxiosConfig(config: AxiosRequestConfig = {}) {
-  return Reflect.metadata(AxiosConfigKey, config)
-}
-
-function getAxiosConfig(target: any, propertyKey: string = "") {
-  if (propertyKey)
-    return Reflect.getMetadata(AxiosConfigKey, target, propertyKey) as AxiosRequestConfig
-  else {
-    return Reflect.getMetadata(AxiosConfigKey, target) as AxiosRequestConfig
-  }
-}
-
-
+import {
+  Protocol, AxiosConfig,
+  XmlnsForCls,
+  XmlnsForMethod,
+  XmlnsForParameters,
+  IXmlns, IXmlnsForParameters,
+  NsType,
+  getXmlns, getXmlnsForParameters, getAxiosConfig
+} from "./def"
 
 /**
  * The most easiest Soap Service for node.js
@@ -106,10 +22,10 @@ class SoapService {
 
   private body: any[] = []
 
-  private _protocol: string = ""
+  private protocol: string = ""
+  private axiosConfig: AxiosRequestConfig = {}
 
-  private _xmlns: IXmlns[] = []
-  private _axiosConfig: AxiosRequestConfig = {}
+  private nsList: IXmlns[] = []
 
   private _reflectOnce = false
   private _flag: {
@@ -122,21 +38,18 @@ class SoapService {
 
   private reflect(method: string) {
     if (!this._reflectOnce) {
-      this._protocol = (this as any).protocol
-      this._xmlns = getXmlns(this)
-      console.log('this._xmlns', this._xmlns)
-      this._axiosConfig = getAxiosConfig(this)
-
+      this.protocol = (this as any)._protocol
+      this.nsList = (this as any)._nsList
+      this.axiosConfig = (this as any)._axiosConfig
       this._reflectOnce = true
     }
 
-    // let axiosConfig = getAxiosConfig(this) || {}
     if (!this._flag[method]) {
       const methodNs = getXmlns(this, method)
       const paramNsList = getXmlnsForParameters(this, method)
       let axiosConfigMethod = getAxiosConfig(this, method)
-      axiosConfigMethod = Object.assign(axiosConfigMethod, this._axiosConfig)
 
+      axiosConfigMethod = Object.assign(axiosConfigMethod, this.axiosConfig)
 
       this._flag[method] = {
         methodNs,
@@ -165,10 +78,9 @@ class SoapService {
   public request(method: string, ...parameters: any[]) {
     this.body = parameters
     this.reflect(method)
+    const requestXml = this.toXml(method)
 
-
-    const requestXml = ""
-
+    console.log(requestXml)
     return new Promise((resolve, reject) => {
       resolve("success")
     })
@@ -189,21 +101,16 @@ class SoapService {
 
   }
 
-  public toXml() {
-
-
-
-  }
 
   private buildNs(nsArr: IXmlns[]) {
     return nsArr.map(m => `${m.ns}="${m.nsUrl}"`).join(" ")
   }
 
-  private encapsulateEnvelope(method: string) {
+  private toXml(method: string) {
 
     const strHeader = this.encapsulateSection("", this.header, this.headerXmlnsList, true)
     let strBody = this.encapsulateSection(method, this.body, this._flag[method].paramNsList)
-    const nsStr = this.buildNs(this._xmlns)
+    const nsStr = this.buildNs(this.nsList)
 
     return `<${this.ns}:Envelope ${nsStr}>${strHeader + strBody}</${this.ns}:Envelope>`
   }
@@ -232,10 +139,9 @@ class SoapService {
 
     return header && entities.length === 0 ?
       `<${tag}/>` : `<${tag}>${inner}</${tag}>`
-
   }
   private encapsulateEnt(ent: any[], entNS: IXmlnsForParameters[]) {
-
+    return ""
   }
 
   private getNs(xmlns: IXmlns[], nsType: NsType): string {
@@ -244,26 +150,28 @@ class SoapService {
   }
 
   private get tem(): string {
-    return this.getNs(this._xmlns, NsType.Tem)
+    return this.getNs(this.nsList, NsType.Tem)
   }
 
   private get ns(): string {
-    return this.getNs(this._xmlns, NsType.Namespace)
+    return this.getNs(this.nsList, NsType.Namespace)
   }
 
   private get arr(): string {
-    return this.getNs(this._xmlns, NsType.Array)
+    return this.getNs(this.nsList, NsType.Array)
   }
   private get ent(): string {
-    return this.getNs(this._xmlns, NsType.EntityNS)
+    return this.getNs(this.nsList, NsType.EntityNS)
   }
 }
 
 export {
   AxiosConfig,
+  AxiosConfigForCls,
   IXmlns,
   AxiosRequestConfig,
-  Xmlns,
+  XmlnsForCls,
+  XmlnsForMethod,
   XmlnsForParameters,
   SoapService,
   NsType

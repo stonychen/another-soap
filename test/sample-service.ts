@@ -1,10 +1,13 @@
-import { AxiosConfig, Xmlns, XmlnsForParameters, NsType, SoapService } from "../src/index"
+import { AxiosConfig, AxiosConfigForCls, XmlnsForMethod, XmlnsForCls, XmlnsForParameters, NsType, SoapService } from "../src/index"
 
 
-@Xmlns("soapenv", "http://schemas.xmlsoap.org/soap/envelope/", NsType.Namespace)
-@Xmlns("xsd", "http://www.w3.org/2001/XMLSchema", NsType.XMLSchema)
-@Xmlns("xsi", "http://www.w3.org/2001/XMLSchema-instance", NsType.XMLSchemaInstance)
-@AxiosConfig({
+@XmlnsForCls(
+  [
+    { ns: "xmlns:soapenv", nsUrl: "http://schemas.xmlsoap.org/soap/envelope/" },
+    { ns: "xmlns:xsd", nsUrl: "http://www.w3.org/2001/XMLSchema" },
+    { ns: "xmlns:xsi", nsUrl: "http://www.w3.org/2001/XMLSchema-instance", nsType: NsType.Namespace }
+  ])
+@AxiosConfigForCls({
   url: "https://webservicesample.com/sample.svc",
   headers: { "soap-action": "value" }
 })
@@ -14,13 +17,14 @@ class SampleService extends SoapService {
    * 
    * @param RequestHeader the parameters of header section
    */
-  @XmlnsForParameters(0, "RequestHeader", [
+  @XmlnsForParameters(
+    0, "RequestHeader", [
     { ns: "soapenv:actor", nsUrl: "http://schemas.xmlsoap.org/soap/actor/next" },
     { ns: "soapenv:mustUnderstand", nsUrl: "0" },
     { ns: "xmlns:ns1", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }
   ])
-  public setHeader(RequestHeader: any) {
-    return super.setHeader(RequestHeader)
+  public setHeader(requestHeader: any) {
+    return super.setHeader(requestHeader)
   }
 
   /**
@@ -28,13 +32,15 @@ class SampleService extends SoapService {
    * @param firstParameter the first parameter
    * @param secondParameter  the second parameter
    */
-  @Xmlns("xmlns", "https://www.google.com/apis/ads/publisher/v202011")
+  @XmlnsForMethod([
+    { ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }
+  ])
   @AxiosConfig({ method: "GET" })
   // @XmlnsForParameters(0, "firstParameter", [
-  //   { ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.EntityNS }
+  //   { ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }
   // ])
   // @XmlnsForParameters(1, "secondParameter", [
-  //   { ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.EntityNS }
+  //   { ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }
   // ])
   public getAdUnitsByStatement(
     firstParameter: any,
@@ -44,7 +50,9 @@ class SampleService extends SoapService {
   }
 
 
-  @Xmlns("xmlns", "https://www.google.com/apis/ads/publisher/v202011")
+  @XmlnsForMethod([
+    { ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }
+  ])
   @AxiosConfig({
     url: "https://webservicesample.com/sample.svc/getAnother",
     method: "POST"

@@ -4,7 +4,7 @@ declare class SampleService extends SoapService {
      *
      * @param RequestHeader the parameters of header section
      */
-    setHeader(RequestHeader: any): this;
+    setHeader(requestHeader: any): this;
     /**
      *
      * @param firstParameter the first parameter

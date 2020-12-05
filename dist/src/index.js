@@ -6,80 +6,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NsType = exports.SoapService = exports.XmlnsForParameters = exports.Xmlns = exports.AxiosConfig = void 0;
+exports.NsType = exports.SoapService = exports.XmlnsForParameters = exports.XmlnsForMethod = exports.XmlnsForClass = exports.AxiosConfig = void 0;
 require("reflect-metadata");
-var NsType;
-(function (NsType) {
-    NsType[NsType["Namespace"] = 0] = "Namespace";
-    NsType[NsType["EntityNS"] = 1] = "EntityNS";
-    NsType[NsType["XMLSchema"] = 2] = "XMLSchema";
-    NsType[NsType["XMLSchemaInstance"] = 3] = "XMLSchemaInstance";
-    NsType[NsType["Array"] = 4] = "Array";
-    NsType[NsType["Tem"] = 5] = "Tem";
-    NsType[NsType["Undefined"] = 6] = "Undefined";
-})(NsType || (NsType = {}));
-exports.NsType = NsType;
-function Xmlns(namespace, namespaceUrl, namespaceType) {
-    if (namespaceType === void 0) { namespaceType = NsType.Undefined; }
-    return Reflect.metadata("xmlns:" + Math.random(), {
-        namespace: namespace,
-        namespaceUrl: namespaceUrl,
-        namespaceType: namespaceType
-    });
-}
-exports.Xmlns = Xmlns;
-function XmlnsForParameters(index, name, nsList) {
-    return Reflect.metadata("xmlnsForParameters:" + Math.random(), {
-        index: index,
-        name: name,
-        nsList: nsList
-    });
-}
-exports.XmlnsForParameters = XmlnsForParameters;
-function getXmlns(target, propertyKey) {
-    if (propertyKey === void 0) { propertyKey = ""; }
-    if (propertyKey) {
-        return Reflect.getMetadataKeys(target, propertyKey)
-            .filter(function (key) { return ("" + key).startsWith("xmlns:"); })
-            .map(function (key) {
-            return Reflect.getMetadata(key, target, propertyKey);
-        });
-    }
-    else {
-        return Reflect.getMetadataKeys(target)
-            .filter(function (key) { return ("" + key).startsWith("xmlns:"); })
-            .map(function (key) {
-            return Reflect.getMetadata(key, target);
-        });
-    }
-}
-function getXmlnsForParameters(target, propertyKey) {
-    return Reflect.getMetadataKeys(target, propertyKey)
-        .filter(function (key) { return ("" + key).startsWith("xmlnsForParameters:"); })
-        .map(function (key) {
-        return Reflect.getMetadata(key, target, propertyKey);
-    });
-}
-function Protocol(val) {
-    return function (constructor) {
-        constructor.prototype.protocol = val;
-        return constructor;
-    };
-}
-var AxiosConfigKey = "AxiosConfigKey";
-function AxiosConfig(config) {
-    if (config === void 0) { config = {}; }
-    return Reflect.metadata(AxiosConfigKey, config);
-}
-exports.AxiosConfig = AxiosConfig;
-function getAxiosConfig(target, propertyKey) {
-    if (propertyKey === void 0) { propertyKey = ""; }
-    if (propertyKey)
-        return Reflect.getMetadata(AxiosConfigKey, target, propertyKey);
-    else {
-        return Reflect.getMetadata(AxiosConfigKey, target);
-    }
-}
+var def_1 = require("./def");
+Object.defineProperty(exports, "AxiosConfig", { enumerable: true, get: function () { return def_1.AxiosConfig; } });
+Object.defineProperty(exports, "XmlnsForClass", { enumerable: true, get: function () { return def_1.XmlnsForClass; } });
+Object.defineProperty(exports, "XmlnsForMethod", { enumerable: true, get: function () { return def_1.XmlnsForMethod; } });
+Object.defineProperty(exports, "XmlnsForParameters", { enumerable: true, get: function () { return def_1.XmlnsForParameters; } });
+Object.defineProperty(exports, "NsType", { enumerable: true, get: function () { return def_1.NsType; } });
 /**
  * The most easiest Soap Service for node.js
  */
@@ -88,29 +22,32 @@ var SoapService = /** @class */ (function () {
         this.header = [];
         this.headerXmlnsList = [];
         this.body = [];
-        this.bodyXmlnsList = [];
-        this._protocol = "";
-        this._xmlns = [];
-        this._method = {};
+        this.protocol = "";
         this._axiosConfig = {};
+        this.nsList = [];
+        this._reflectOnce = false;
         this._flag = {};
     }
     SoapService.prototype.reflect = function (method) {
-        if (!this._flag.$__) {
-            this._protocol = this.protocol;
-            this._xmlns = getXmlns(this);
-            console.log('this._xmlns', this._xmlns);
-            this._axiosConfig = getAxiosConfig(this);
-            this._flag.$__ = true;
+        if (!this._reflectOnce) {
+            this.protocol = this._protocol;
+            this.nsList = this._nsList;
+            console.log('this.nsList', this.nsList);
+            // console.log('this._nsList', this._nsList)
+            this._axiosConfig = def_1.getAxiosConfig(this);
+            console.log('this._axiosConfig', this._axiosConfig);
+            this._reflectOnce = true;
         }
         // let axiosConfig = getAxiosConfig(this) || {}
         if (!this._flag[method]) {
-            var xmlns = getXmlns(this, method);
-            var axiosConfigMethod = getAxiosConfig(this, method);
+            var methodNs = def_1.getXmlns(this, method);
+            var paramNsList = def_1.getXmlnsForParameters(this, method);
+            var axiosConfigMethod = def_1.getAxiosConfig(this, method);
             axiosConfigMethod = Object.assign(axiosConfigMethod, this._axiosConfig);
             this._flag[method] = {
-                xmlns: xmlns,
-                axiosConfigMethod: axiosConfigMethod
+                methodNs: methodNs,
+                axiosConfigMethod: axiosConfigMethod,
+                paramNsList: paramNsList
             };
         }
     };
@@ -123,7 +60,7 @@ var SoapService = /** @class */ (function () {
         for (var _i = 0; _i < arguments.length; _i++) {
             parameters[_i] = arguments[_i];
         }
-        var nsList = getXmlnsForParameters(this, "setHeader");
+        var nsList = def_1.getXmlnsForParameters(this, "setHeader");
         this.header = parameters;
         this.headerXmlnsList = nsList;
         return this;
@@ -138,12 +75,10 @@ var SoapService = /** @class */ (function () {
         for (var _i = 1; _i < arguments.length; _i++) {
             parameters[_i - 1] = arguments[_i];
         }
-        var nsList = getXmlnsForParameters(this, method);
-        this.bodyXmlnsList = nsList;
         this.body = parameters;
         this.reflect(method);
-        console.log("nsList", nsList);
-        var requestXml = "";
+        var requestXml = this.toXml(method);
+        console.log(requestXml);
         return new Promise(function (resolve, reject) {
             resolve("success");
         });
@@ -161,8 +96,72 @@ var SoapService = /** @class */ (function () {
         //     })
         // })
     };
+    SoapService.prototype.buildNs = function (nsArr) {
+        return nsArr.map(function (m) { return m.ns + "=\"" + m.nsUrl + "\""; }).join(" ");
+    };
+    SoapService.prototype.toXml = function (method) {
+        var strHeader = this.encapsulateSection("", this.header, this.headerXmlnsList, true);
+        var strBody = this.encapsulateSection(method, this.body, this._flag[method].paramNsList);
+        var nsStr = this.buildNs(this.nsList);
+        return "<" + this.ns + ":Envelope " + nsStr + ">" + (strHeader + strBody) + "</" + this.ns + ":Envelope>";
+    };
+    SoapService.prototype.encapsulateSection = function (method, entities, entNS, header) {
+        if (header === void 0) { header = false; }
+        var tag = header ? "Header" : "Body";
+        tag = this.ns ? this.ns + ":" + tag : tag;
+        var inner = "";
+        if (!header) {
+            var strNS = this.buildNs(this._flag[method].methodNs);
+            var ns = this.getNs(this._flag[method].methodNs, def_1.NsType.Tem);
+            var tempTem = this.tem ? this.tem + ":" : "";
+            tempTem = ns ? ns + ":" : tempTem;
+            inner = this.encapsulateEnt(entities, entNS);
+            inner = entities.length === 0 ? "<" + tempTem + method + " " + strNS + "/>"
+                : "<" + tempTem + method + " " + strNS + ">" + inner + "</" + tempTem + method + " " + strNS + "/>";
+        }
+        else {
+            inner = this.encapsulateEnt(entities, entNS);
+        }
+        return header && entities.length === 0 ?
+            "<" + tag + "/>" : "<" + tag + ">" + inner + "</" + tag + ">";
+    };
+    SoapService.prototype.encapsulateEnt = function (ent, entNS) {
+        return "";
+    };
+    SoapService.prototype.getNs = function (xmlns, nsType) {
+        var tempNs = xmlns.filter(function (m) { return m.nsType === nsType; });
+        return tempNs.length > 0 ? tempNs[0].ns : "";
+    };
+    Object.defineProperty(SoapService.prototype, "tem", {
+        get: function () {
+            return this.getNs(this.nsList, def_1.NsType.Tem);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(SoapService.prototype, "ns", {
+        get: function () {
+            return this.getNs(this.nsList, def_1.NsType.Namespace);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(SoapService.prototype, "arr", {
+        get: function () {
+            return this.getNs(this.nsList, def_1.NsType.Array);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(SoapService.prototype, "ent", {
+        get: function () {
+            return this.getNs(this.nsList, def_1.NsType.EntityNS);
+        },
+        enumerable: false,
+        configurable: true
+    });
     SoapService = __decorate([
-        Protocol("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
+        def_1.Protocol("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
     ], SoapService);
     return SoapService;
 }());

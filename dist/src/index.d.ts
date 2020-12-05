@@ -1,31 +1,6 @@
 import "reflect-metadata";
 import { AxiosRequestConfig } from "axios";
-declare enum NsType {
-    Namespace = 0,
-    EntityNS = 1,
-    XMLSchema = 2,
-    XMLSchemaInstance = 3,
-    Array = 4,
-    Tem = 5,
-    Undefined = 6
-}
-declare function Xmlns(namespace: string, namespaceUrl: string, namespaceType?: NsType): {
-    (target: Function): void;
-    (target: Object, propertyKey: string | symbol): void;
-};
-declare function XmlnsForParameters(index: number, name: string, nsList: IXmlns[]): {
-    (target: Function): void;
-    (target: Object, propertyKey: string | symbol): void;
-};
-interface IXmlns {
-    ns: string;
-    nsUrl: string;
-    nsType?: NsType;
-}
-declare function AxiosConfig(config?: AxiosRequestConfig): {
-    (target: Function): void;
-    (target: Object, propertyKey: string | symbol): void;
-};
+import { AxiosConfig, XmlnsForClass, XmlnsForMethod, XmlnsForParameters, IXmlns, NsType } from "./def";
 /**
  * The most easiest Soap Service for node.js
  */
@@ -33,11 +8,10 @@ declare class SoapService {
     private header;
     private headerXmlnsList;
     private body;
-    private bodyXmlnsList;
-    private _protocol;
-    private _xmlns;
-    private _method;
+    private protocol;
     private _axiosConfig;
+    private nsList;
+    private _reflectOnce;
     private _flag;
     private reflect;
     /**
@@ -51,5 +25,14 @@ declare class SoapService {
      * @param parameters the parameters of the method
      */
     request(method: string, ...parameters: any[]): Promise<unknown>;
+    private buildNs;
+    private toXml;
+    private encapsulateSection;
+    private encapsulateEnt;
+    private getNs;
+    private get tem();
+    private get ns();
+    private get arr();
+    private get ent();
 }
-export { AxiosConfig, IXmlns, AxiosRequestConfig, Xmlns, XmlnsForParameters, SoapService, NsType };
+export { AxiosConfig, IXmlns, AxiosRequestConfig, XmlnsForClass, XmlnsForMethod, XmlnsForParameters, SoapService, NsType };
