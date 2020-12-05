@@ -17,15 +17,16 @@ interface IXmlns {
 interface IXmlnsForParameters {
     index: number;
     name: string;
-    Nss: IXmlns[];
+    nsList: IXmlns[];
 }
-declare function XmlnsForClass(nsList: IXmlns[]): <T>(constructor: new () => T) => new () => T;
+declare function XmlnsForCls(nsList: IXmlns[]): <T>(constructor: new () => T) => new () => T;
+declare function AxiosConfigForCls(config: AxiosRequestConfig): <T>(constructor: new () => T) => new () => T;
 declare function XmlnsForMethod(nsList: IXmlns[]): {
     (target: Function): void;
     (target: Object, propertyKey: string | symbol): void;
 };
 declare function getXmlns(target: any, propertyKey: string): IXmlns[];
-declare function XmlnsForParameters(index: number, name: string, nsList: IXmlns[]): {
+declare function XmlnsForParameters(index: number, name: string, nsList?: IXmlns[]): {
     (target: Function): void;
     (target: Object, propertyKey: string | symbol): void;
 };
@@ -36,4 +37,4 @@ declare function AxiosConfig(config?: AxiosRequestConfig): {
     (target: Object, propertyKey: string | symbol): void;
 };
 declare function getAxiosConfig(target: any, propertyKey?: string): AxiosRequestConfig;
-export { Protocol, AxiosConfig, XmlnsForMethod, XmlnsForClass, XmlnsForParameters, IXmlns, IXmlnsForParameters, NsType, getXmlns, getXmlnsForParameters, getAxiosConfig };
+export { Protocol, AxiosConfig, AxiosConfigForCls, XmlnsForMethod, XmlnsForCls, XmlnsForParameters, IXmlns, IXmlnsForParameters, NsType, getXmlns, getXmlnsForParameters, getAxiosConfig };

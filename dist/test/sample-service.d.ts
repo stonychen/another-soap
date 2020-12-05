@@ -10,7 +10,7 @@ declare class SampleService extends SoapService {
      * @param firstParameter the first parameter
      * @param secondParameter  the second parameter
      */
-    getAdUnitsByStatement(firstParameter: any, secondParameter: any): Promise<unknown>;
-    getAnother(): Promise<unknown>;
+    GetAdUnitsByStatement(firstParameter: any, secondParameter: any): Promise<import("axios").AxiosResponse<any>>;
+    GetAnother(): Promise<import("axios").AxiosResponse<any>>;
 }
 export default SampleService;

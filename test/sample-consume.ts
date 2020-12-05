@@ -5,10 +5,18 @@ const newService = new SampleService().setHeader({
   applicationName: "applicationName"
 })
 
-newService.getAdUnitsByStatement({ query: "" }, {}).then(res => {
+newService.GetAdUnitsByStatement({
+  queries: [
+    {
+      id: "1",
+      name: "san"
+    }
+  ],
+  uuid: "uuid"
+}, "").then(res => {
   console.log(res)
 })
 
-newService.getAnother().then(res => {
+newService.GetAnother().then(res => {
   console.log(res)
 })

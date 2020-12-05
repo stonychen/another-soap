@@ -1,15 +1,14 @@
 import "reflect-metadata";
 import { AxiosRequestConfig } from "axios";
-import { AxiosConfig, XmlnsForClass, XmlnsForMethod, XmlnsForParameters, IXmlns, NsType } from "./def";
+import { AxiosConfig, AxiosConfigForCls, XmlnsForCls, XmlnsForMethod, XmlnsForParameters, IXmlns, NsType } from "./def";
 /**
  * The most easiest Soap Service for node.js
  */
 declare class SoapService {
     private header;
     private headerXmlnsList;
-    private body;
     private protocol;
-    private _axiosConfig;
+    private axiosConfig;
     private nsList;
     private _reflectOnce;
     private _flag;
@@ -24,15 +23,16 @@ declare class SoapService {
      * @param method the name of the request action under XML Body, like "GetData"
      * @param parameters the parameters of the method
      */
-    request(method: string, ...parameters: any[]): Promise<unknown>;
+    request(method: string, ...parameters: any[]): Promise<import("axios").AxiosResponse<any>>;
     private buildNs;
     private toXml;
-    private encapsulateSection;
-    private encapsulateEnt;
+    private buildSection;
+    private encapsulateEntities;
+    private generateXml;
     private getNs;
     private get tem();
     private get ns();
     private get arr();
     private get ent();
 }
-export { AxiosConfig, IXmlns, AxiosRequestConfig, XmlnsForClass, XmlnsForMethod, XmlnsForParameters, SoapService, NsType };
+export { AxiosConfig, AxiosConfigForCls, IXmlns, AxiosRequestConfig, XmlnsForCls, XmlnsForMethod, XmlnsForParameters, SoapService, NsType };

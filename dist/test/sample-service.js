@@ -37,11 +37,11 @@ var SampleService = /** @class */ (function (_super) {
      * @param firstParameter the first parameter
      * @param secondParameter  the second parameter
      */
-    SampleService.prototype.getAdUnitsByStatement = function (firstParameter, secondParameter) {
-        return this.request("getAdUnitsByStatement", firstParameter, secondParameter);
+    SampleService.prototype.GetAdUnitsByStatement = function (firstParameter, secondParameter) {
+        return _super.prototype.request.call(this, "GetAdUnitsByStatement", firstParameter, secondParameter);
     };
-    SampleService.prototype.getAnother = function () {
-        return this.request("getAnother");
+    SampleService.prototype.GetAnother = function () {
+        return _super.prototype.request.call(this, "GetAnother");
     };
     __decorate([
         index_1.XmlnsForParameters(0, "RequestHeader", [
@@ -51,27 +51,24 @@ var SampleService = /** @class */ (function (_super) {
         ])
     ], SampleService.prototype, "setHeader", null);
     __decorate([
-        index_1.XmlnsForMethod([
-            { ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: index_1.NsType.Namespace }
+        index_1.XmlnsForMethod([{ ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: index_1.NsType.Namespace }]),
+        index_1.AxiosConfig({ method: "GET" }),
+        index_1.XmlnsForParameters(0, "firstParameter", [
+        // { ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }
         ]),
-        index_1.AxiosConfig({ method: "GET" })
-    ], SampleService.prototype, "getAdUnitsByStatement", null);
+        index_1.XmlnsForParameters(1, "secondParameter")
+    ], SampleService.prototype, "GetAdUnitsByStatement", null);
     __decorate([
-        index_1.XmlnsForMethod([
-            { ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: index_1.NsType.Namespace }
-        ]),
-        index_1.AxiosConfig({
-            url: "https://webservicesample.com/sample.svc/getAnother",
-            method: "POST"
-        })
-    ], SampleService.prototype, "getAnother", null);
+        index_1.XmlnsForMethod([{ ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: index_1.NsType.Namespace }]),
+        index_1.AxiosConfig({ method: "POST", url: "https://webservicesample.com/sample.svc/getAnother" })
+    ], SampleService.prototype, "GetAnother", null);
     SampleService = __decorate([
-        index_1.XmlnsForClass([
-            { ns: "xmlns:soapenv", nsUrl: "http://schemas.xmlsoap.org/soap/envelope/" },
-            { ns: "xmlns:xsd", nsUrl: "http://www.w3.org/2001/XMLSchema" },
-            { ns: "xmlns:xsi", nsUrl: "http://www.w3.org/2001/XMLSchema-instance", nsType: index_1.NsType.Namespace }
+        index_1.XmlnsForCls([
+            { ns: "xmlns:soapenv", nsUrl: "http://schemas.xmlsoap.org/soap/envelope/", nsType: index_1.NsType.Namespace },
+            { ns: "xmlns:xsd", nsUrl: "http://www.w3.org/2001/XMLSchema", nsType: index_1.NsType.XMLSchema },
+            { ns: "xmlns:xsi", nsUrl: "http://www.w3.org/2001/XMLSchema-instance", nsType: index_1.NsType.XMLSchemaInstance }
         ]),
-        index_1.AxiosConfig({
+        index_1.AxiosConfigForCls({
             url: "https://webservicesample.com/sample.svc",
             headers: { "soap-action": "value" }
         })

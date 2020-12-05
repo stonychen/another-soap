@@ -19,7 +19,7 @@ interface IXmlns {
 interface IXmlnsForParameters {
   index: number,
   name: string,
-  Nss: IXmlns[]
+  nsList: IXmlns[]
 }
 function XmlnsForCls(nsList: IXmlns[]) {
   return <T>(constructor: new () => T): new () => T => {
@@ -28,7 +28,7 @@ function XmlnsForCls(nsList: IXmlns[]) {
   }
 }
 
-function AxiosConfigForCls(config: AxiosRequestConfig[]) {
+function AxiosConfigForCls(config: AxiosRequestConfig) {
   return <T>(constructor: new () => T): new () => T => {
     constructor.prototype._axiosConfig = config
     return constructor
@@ -41,15 +41,16 @@ function XmlnsForMethod(nsList: IXmlns[]) {
 
 
 function getXmlns(target: any, propertyKey: string): IXmlns[] {
-  return Reflect.getMetadataKeys(target, propertyKey)
+  const lists = Reflect.getMetadataKeys(target, propertyKey)
     .filter(key => ("" + key).startsWith("xmlns:"))
     .map(key => {
 
       return Reflect.getMetadata(key, target, propertyKey)
     })
+  return lists.length > 0 ? lists[0] : []
 }
 
-function XmlnsForParameters(index: number, name: string, nsList: IXmlns[]) {
+function XmlnsForParameters(index: number, name: string, nsList: IXmlns[] = []) {
   return Reflect.metadata("xmlnsForParameters:" + Math.random(), {
     index,
     name,

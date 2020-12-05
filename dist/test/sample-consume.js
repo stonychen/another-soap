@@ -8,9 +8,17 @@ var newService = new sample_service_1.default().setHeader({
     networkCode: "networkCode",
     applicationName: "applicationName"
 });
-newService.getAdUnitsByStatement({ query: "" }, {}).then(function (res) {
+newService.GetAdUnitsByStatement({
+    queries: [
+        {
+            id: "1",
+            name: "san"
+        }
+    ],
+    uuid: "uuid"
+}, "").then(function (res) {
     console.log(res);
 });
-newService.getAnother().then(function (res) {
+newService.GetAnother().then(function (res) {
     console.log(res);
 });
