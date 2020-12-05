@@ -85,33 +85,30 @@ function getAxiosConfig(target, propertyKey) {
  */
 var SoapService = /** @class */ (function () {
     function SoapService() {
-        /**
-         * envelope is used for override, and put namespaces
-         */
-        this.envelope = null;
         this.header = [];
         this.headerXmlnsList = [];
         this.body = [];
         this.bodyXmlnsList = [];
         this._protocol = "";
-        this._envNs = [];
+        this._xmlns = [];
         this._method = {};
         this._axiosConfig = {};
-        this._parseFlag = {};
+        this._flag = {};
     }
     SoapService.prototype.reflect = function (method) {
-        if (!this._parseFlag.$__) {
+        if (!this._flag.$__) {
             this._protocol = this.protocol;
-            this._envNs = getXmlns(this, "envelope");
+            this._xmlns = getXmlns(this);
+            console.log('this._xmlns', this._xmlns);
             this._axiosConfig = getAxiosConfig(this);
-            this._parseFlag.$__ = true;
+            this._flag.$__ = true;
         }
         // let axiosConfig = getAxiosConfig(this) || {}
-        if (!this._parseFlag[method]) {
+        if (!this._flag[method]) {
             var xmlns = getXmlns(this, method);
             var axiosConfigMethod = getAxiosConfig(this, method);
             axiosConfigMethod = Object.assign(axiosConfigMethod, this._axiosConfig);
-            this._parseFlag[method] = {
+            this._flag[method] = {
                 xmlns: xmlns,
                 axiosConfigMethod: axiosConfigMethod
             };

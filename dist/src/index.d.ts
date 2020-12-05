@@ -22,10 +22,6 @@ interface IXmlns {
     nsUrl: string;
     nsType?: NsType;
 }
-interface IEntity {
-    param: any;
-    xmlnsList: IXmlns[];
-}
 declare function AxiosConfig(config?: AxiosRequestConfig): {
     (target: Function): void;
     (target: Object, propertyKey: string | symbol): void;
@@ -34,19 +30,15 @@ declare function AxiosConfig(config?: AxiosRequestConfig): {
  * The most easiest Soap Service for node.js
  */
 declare class SoapService {
-    /**
-     * envelope is used for override, and put namespaces
-     */
-    envelope: null;
     private header;
     private headerXmlnsList;
     private body;
     private bodyXmlnsList;
     private _protocol;
-    private _envNs;
+    private _xmlns;
     private _method;
     private _axiosConfig;
-    private _parseFlag;
+    private _flag;
     private reflect;
     /**
      * Used fot setup header for XML header
@@ -60,4 +52,4 @@ declare class SoapService {
      */
     request(method: string, ...parameters: any[]): Promise<unknown>;
 }
-export { AxiosConfig, IXmlns, IEntity, AxiosRequestConfig, Xmlns, XmlnsForParameters, SoapService, NsType };
+export { AxiosConfig, IXmlns, AxiosRequestConfig, Xmlns, XmlnsForParameters, SoapService, NsType };

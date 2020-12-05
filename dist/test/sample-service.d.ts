@@ -1,6 +1,5 @@
 import { SoapService } from "../src/index";
 declare class SampleService extends SoapService {
-    envelope: null;
     /**
      *
      * @param RequestHeader the parameters of header section

@@ -23,9 +23,7 @@ var index_1 = require("../src/index");
 var SampleService = /** @class */ (function (_super) {
     __extends(SampleService, _super);
     function SampleService() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.envelope = null;
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      *
@@ -45,11 +43,6 @@ var SampleService = /** @class */ (function (_super) {
     SampleService.prototype.getAnother = function () {
         return this.request("getAnother");
     };
-    __decorate([
-        index_1.Xmlns("soapenv", "http://schemas.xmlsoap.org/soap/envelope/", index_1.NsType.Namespace),
-        index_1.Xmlns("xsd", "http://www.w3.org/2001/XMLSchema", index_1.NsType.XMLSchema),
-        index_1.Xmlns("xsi", "http://www.w3.org/2001/XMLSchema-instance", index_1.NsType.XMLSchemaInstance)
-    ], SampleService.prototype, "envelope", void 0);
     __decorate([
         index_1.XmlnsForParameters(0, "RequestHeader", [
             { ns: "soapenv:actor", nsUrl: "http://schemas.xmlsoap.org/soap/actor/next" },
@@ -75,6 +68,9 @@ var SampleService = /** @class */ (function (_super) {
         })
     ], SampleService.prototype, "getAnother", null);
     SampleService = __decorate([
+        index_1.Xmlns("soapenv", "http://schemas.xmlsoap.org/soap/envelope/", index_1.NsType.Namespace),
+        index_1.Xmlns("xsd", "http://www.w3.org/2001/XMLSchema", index_1.NsType.XMLSchema),
+        index_1.Xmlns("xsi", "http://www.w3.org/2001/XMLSchema-instance", index_1.NsType.XMLSchemaInstance),
         index_1.AxiosConfig({
             url: "https://webservicesample.com/sample.svc",
             headers: { "soap-action": "value" }
