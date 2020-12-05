@@ -2,8 +2,8 @@
   "name": "another-soap",
   "version": "0.0.3",
   "description": "",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
   "keywords": [
     "soap",
     "xml",
@@ -15,13 +15,15 @@
     "another-soap"
   ],
   "scripts": {
-    "dev": "tsc && node dist/index.js",
+    "dev": "tsc && node dist/src/index.js",
+    "test": "tsc && node dist/test/spec.js",
     "build": "tsc -b",
     "lint": "eslint src/**"
   },
   "dependencies": {
     "another-xml2json": "0.0.3",
-    "axios": "^0.21.0"
+    "axios": "^0.21.0",
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
