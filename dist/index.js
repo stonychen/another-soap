@@ -20,24 +20,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NsType = exports.Parameter = exports.Xmlns = exports.AxiosConfigForMethod = exports.AxiosConfig = exports.Envelope = exports.SoapService = void 0;
+exports.NsType = exports.param = exports.xmlns = exports.axiosConfigForMethod = exports.axiosConfig = exports.envelope = exports.SoapService = void 0;
 require("reflect-metadata");
 var axios_1 = __importDefault(require("axios"));
 var another_xml2json_1 = require("another-xml2json");
 var def_1 = require("./def");
-Object.defineProperty(exports, "AxiosConfig", { enumerable: true, get: function () { return def_1.AxiosConfig; } });
-Object.defineProperty(exports, "AxiosConfigForMethod", { enumerable: true, get: function () { return def_1.AxiosConfigForMethod; } });
-Object.defineProperty(exports, "Envelope", { enumerable: true, get: function () { return def_1.Envelope; } });
-Object.defineProperty(exports, "Xmlns", { enumerable: true, get: function () { return def_1.Xmlns; } });
-Object.defineProperty(exports, "Parameter", { enumerable: true, get: function () { return def_1.Parameter; } });
+Object.defineProperty(exports, "axiosConfig", { enumerable: true, get: function () { return def_1.axiosConfig; } });
+Object.defineProperty(exports, "axiosConfigForMethod", { enumerable: true, get: function () { return def_1.axiosConfigForMethod; } });
+Object.defineProperty(exports, "envelope", { enumerable: true, get: function () { return def_1.envelope; } });
+Object.defineProperty(exports, "xmlns", { enumerable: true, get: function () { return def_1.xmlns; } });
+Object.defineProperty(exports, "param", { enumerable: true, get: function () { return def_1.param; } });
 Object.defineProperty(exports, "NsType", { enumerable: true, get: function () { return def_1.NsType; } });
-/**
- * The most easiest Soap Service for node.js
- */
 var SoapService = /** @class */ (function () {
     function SoapService() {
         this.header = [];
-        this.headerXmlnsList = [];
+        this.headerIXmlnsList = [];
         this.protocol = "";
         this.axiosConfig = {};
         this.nsList = [];
@@ -61,7 +58,7 @@ var SoapService = /** @class */ (function () {
         }
         if (!this._flag[method]) {
             var nsList = def_1.getXmlns(this, method);
-            var paramNsList = def_1.getParameter(this, method);
+            var paramNsList = def_1.getParam(this, method);
             var axiosConfigMethod = def_1.getAxiosConfig(this, method);
             axiosConfigMethod = Object.assign(axiosConfigMethod, this.axiosConfig);
             this._flag[method] = {
@@ -73,37 +70,37 @@ var SoapService = /** @class */ (function () {
     };
     /**
      * Used fot setup header for XML header
-     * @param parameters the parameters of the XML header
+     * @param params the params of the XML header
      */
     SoapService.prototype.setHeader = function () {
-        var parameters = [];
+        var params = [];
         for (var _i = 0; _i < arguments.length; _i++) {
-            parameters[_i] = arguments[_i];
+            params[_i] = arguments[_i];
         }
-        var nsList = def_1.getParameter(this, "setHeader");
-        this.header = parameters;
-        this.headerXmlnsList = nsList;
+        var nsList = def_1.getParam(this, "setHeader");
+        this.header = params;
+        this.headerIXmlnsList = nsList;
         return this;
     };
     /**
      *
      * @param method the name of the request action under XML Body, like "GetData"
-     * @param parameters the parameters of the method
+     * @param params the params of the method
      */
     SoapService.prototype.request = function (method) {
-        var parameters = [];
+        var params = [];
         for (var _i = 1; _i < arguments.length; _i++) {
-            parameters[_i - 1] = arguments[_i];
+            params[_i - 1] = arguments[_i];
         }
         this.reflect(method);
-        var requestXml = this.toXml(method, parameters);
-        var axiosConfig = this._flag[method].axiosConfigMethod || {};
-        var headers = axiosConfig.headers || {};
+        var requestXml = this.toXml(method, params);
+        var config = this._flag[method].axiosConfigMethod || {};
+        var headers = config.headers || {};
         if (!headers["Content-Type"]) {
             headers["Content-Type"] = "text/xml; charset=utf-8";
         }
         this._requestXml = requestXml;
-        var options = __assign(__assign({}, axiosConfig), { headers: headers, data: requestXml, transformResponse: [function (res) {
+        var options = __assign(__assign({}, def_1.axiosConfig), { headers: headers, data: requestXml, transformResponse: [function (res) {
                     if (res)
                         return another_xml2json_1.xml2json(res, {
                             escape: true,
@@ -116,12 +113,12 @@ var SoapService = /** @class */ (function () {
     SoapService.prototype.buildNs = function (nsArr) {
         return nsArr.map(function (m) { return m.ns + "=\"" + m.nsUrl + "\""; }).join(" ");
     };
-    SoapService.prototype.toXml = function (method, parameters) {
-        var strHeader = this._strHeader ? this._strHeader : this.buildSection(method, this.header, this.headerXmlnsList, true);
+    SoapService.prototype.toXml = function (method, params) {
+        var strHeader = this._strHeader ? this._strHeader : this.buildSection(method, this.header, this.headerIXmlnsList, true);
         this._strHeader = strHeader;
-        var strBody = this.buildSection(method, parameters, this._flag[method].paramNsList);
+        var strBody = this.buildSection(method, params, this._flag[method].paramNsList);
         var nsStr = this.buildNs(this.nsList);
-        return this.protocol + "<" + this.ns + ":Envelope " + nsStr + ">" + (strHeader + strBody) + "</" + this.ns + ":Envelope>";
+        return this.protocol + "<" + this.ns + ":envelope " + nsStr + ">" + (strHeader + strBody) + "</" + this.ns + ":envelope>";
     };
     SoapService.prototype.buildSection = function (method, entities, entNS, header) {
         if (header === void 0) { header = false; }
@@ -149,7 +146,7 @@ var SoapService = /** @class */ (function () {
         return entities.map(function (item, index) {
             var paramNs = paramNSList.find(function (e) { return e.index === index; });
             if (!paramNs)
-                throw "Should config a namespace for the parameters.";
+                throw "Should config a namespace for the params.";
             var ns = _this.getNs(paramNs.nsList, def_1.NsType.Namespace);
             var name = (paramNs === null || paramNs === void 0 ? void 0 : paramNs.name) || "";
             var tempTem = _this.tem ? _this.tem : "";
@@ -204,10 +201,10 @@ var SoapService = /** @class */ (function () {
                 : "<" + this.arr + ":" + typeof node + ">" + val + "</" + this.arr + ":" + typeof node + ">";
         }
     };
-    SoapService.prototype.getNs = function (xmlns, nsType) {
-        var tempNs = xmlns.filter(function (m) { return m.nsType === nsType; });
-        var ns = tempNs.length > 0 ? tempNs[0].ns : "";
-        return ns.replace(/xmlns/ig, "").replace(/:/ig, "");
+    SoapService.prototype.getNs = function (ns, nsType) {
+        var tempNs = ns.filter(function (m) { return m.nsType === nsType; });
+        var namespace = tempNs.length > 0 ? tempNs[0].ns : "";
+        return namespace.replace(/xmlns/ig, "").replace(/:/ig, "");
     };
     Object.defineProperty(SoapService.prototype, "tem", {
         get: function () {
@@ -238,7 +235,7 @@ var SoapService = /** @class */ (function () {
         configurable: true
     });
     SoapService = __decorate([
-        def_1.Protocol("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
+        def_1.protocol("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
     ], SoapService);
     return SoapService;
 }());

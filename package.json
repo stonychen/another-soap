@@ -1,6 +1,6 @@
 {
   "name": "another-soap",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -17,8 +17,9 @@
     "another-soap"
   ],
   "scripts": {
-    "build": "tsc && node dist/index.js",
+    "dev": "ts-node src/index.ts",
     "test": "mocha -r ts-node/register test/**/*.spec.ts",
+    "build": "tsc --project tsconfig.json",
     "lint": "eslint src/**"
   },
   "dependencies": {

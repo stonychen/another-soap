@@ -17,7 +17,6 @@ another-soap is another soap package for node js.
 - [Check the request XML](#check-the-request-xml)
 - [MIT License](#mit-license)
 
-
 # Getting started
 
 ## Install
@@ -33,25 +32,31 @@ npm install another-soap -save
 Create a typesscript(.ts) file, and name it as `example-service.ts`. Then import package like below.
 
 ``` typescript
-import { AxiosConfig, AxiosConfigForMethod, Xmlns, Envelope, Parameter, NsType, SoapService } from 'another-soap'
+import {
+  axiosConfig, axiosConfigForMethod, xmlns,
+  envelope, param,
+  NsType, SoapService
+} from 'another-soap'
 ```
 
 Create a class `ExampleService`, and inherit from SoapService.
 
 ``` typescript
 class ExampleService extends SoapService {
+
+
 }
 ```
 
 Add namespaces, axios config for the class. For more information about axios, refer to [axios](https://www.npmjs.com/package/axios). Axios config can be overridden by the definition on each method.
 
 ``` typescript
-@Envelope([
+@envelope([
   { ns: "xmlns:soapenv", nsUrl: "http://schemas.xmlsoap.org/soap/envelope/", nsType: NsType.Namespace },
   { ns: "xmlns:xsd", nsUrl: "http://www.w3.org/2001/XMLSchema", nsType: NsType.XMLSchema },
   { ns: "xmlns:xsi", nsUrl: "http://www.w3.org/2001/XMLSchema-instance", nsType: NsType.XMLSchemaInstance }
 ])
-@AxiosConfig({
+@axiosConfig({
   url: "https://webservicesample.com/sample.svc",
   headers: { "soap-action": "value" }
 })
@@ -63,7 +68,7 @@ class ExampleService extends SoapService {
 
 If request XML contain a section of Header, we need to add a method `setHeader` inside the class `ExampleService`.  
 
-Let's see below code, `RequestHeader` is one of the parameters. We can add more paramters. Correspondingly we need to add `Parameter` on for the method.
+Let's see below code, `RequestHeader` is one of the parameters. We can add more paramters. Correspondingly we need to add `param` on for the method.
 
 ``` typescript
 class ExampleService extends SoapService {
@@ -71,7 +76,7 @@ class ExampleService extends SoapService {
   /**
    * @param RequestHeader the one of parameters of header section
    */
-  @Parameter(
+  @param(
     0, "RequestHeader", [
     { ns: "soapenv:actor", nsUrl: "http://schemas.xmlsoap.org/soap/actor/next" },
     { ns: "soapenv:mustUnderstand", nsUrl: "0" },
@@ -80,10 +85,10 @@ class ExampleService extends SoapService {
   public setHeader(requestHeader: any) {
     return super.setHeader(requestHeader)
   }
-
+}
 ```
 
-The decorator of `Parameter` contains three parameters.
+The decorator of `param` contains three parameters.
 
 ``` typescript
 /**
@@ -91,7 +96,7 @@ The decorator of `Parameter` contains three parameters.
  * @param name the name of the parameters, it will be compiled into request XML
  * @param nsList the xmlns definition
  */
-declare function Parameter(index: number, name: string, nsList?: IXmlns[]): {
+declare function param(index: number, name: string, nsList?: Ixmlns[]): {
     (target: Function): void;
     (target: Object, propertyKey: string | symbol): void;
 };
@@ -99,33 +104,33 @@ declare function Parameter(index: number, name: string, nsList?: IXmlns[]): {
 
 ## Add a request method
 
-Add `Xmlns` for the method. If there is no, we inherit namespaces from envelope.
+Add `xmlns` for the method. If there is no, we inherit namespaces from envelope.
 
-Add `AxiosConfigForMethod` for the method, we will combine axios config with which was defined on the class. Maybe the request headers, url or other other options of the method might be different. We just override it here.
+Add `axiosConfigForMethod` for the method, we will combine axios config with which was defined on the class. Maybe the request headers, url or other other options of the method might be different. We just override it here.
 
-Add `Parameter` for the method. And it should be matched with actual paramters.
+Add `param` for the method. And it should be matched with actual paramters.
 
 ``` typescript
 class ExampleService extends SoapService {
 
   /**
-   * @param firstParameter the first parameter
-   * @param secondParameter  the second parameter
+   * @param firstParam the first parameter
+   * @param secondParam  the second parameter
    */
-  @Xmlns([{ ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }])
-  @AxiosConfigForMethod({ method: "GET" })
-  @Parameter(0, "firstParameter", [
+  @xmlns([{ ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }])
+  @axiosConfigForMethod({ method: "GET" })
+  @param(0, "firstParam", [
     { ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }
   ])
-  @Parameter(1, "secondParameter")
+  @param(1, "secondParam")
   public GetAdUnitsByStatement(
-    firstParameter: any,
-    secondParameter: any
+    firstParam: any,
+    secondParam: any
   ) {
-    return super.request("GetAdUnitsByStatement", firstParameter, secondParameter)
+    return super.request("GetAdUnitsByStatement", firstParam, secondParam)
   }
-
 }
+
 ```
 
 ## Consume the service
@@ -169,25 +174,28 @@ newService.GetAdUnitsByStatement({
 example-service.ts
 
 ``` typescript
-import { AxiosConfig, AxiosConfigForMethod, Xmlns, Envelope, Parameter, NsType, SoapService } from "another-soap"
+import {
+  axiosConfig, axiosConfigForMethod, xmlns,
+  envelope, param, NsType, SoapService
+} from "another-soap"
 
 
-@Envelope([
+@envelope([
   { ns: "xmlns:soapenv", nsUrl: "http://schemas.xmlsoap.org/soap/envelope/", nsType: NsType.Namespace },
   { ns: "xmlns:xsd", nsUrl: "http://www.w3.org/2001/XMLSchema", nsType: NsType.XMLSchema },
   { ns: "xmlns:xsi", nsUrl: "http://www.w3.org/2001/XMLSchema-instance", nsType: NsType.XMLSchemaInstance }
 ])
-@AxiosConfig({
+@axiosConfig({
   url: "https://webservicesample.com/sample.svc",
   headers: { "soap-action": "value" }
 })
 class ExampleService extends SoapService {
 
   /**
-   * 
+   * Set a Header
    * @param RequestHeader the one of parameters of header section
    */
-  @Parameter(
+  @param(
     0, "RequestHeader", [
     { ns: "soapenv:actor", nsUrl: "http://schemas.xmlsoap.org/soap/actor/next" },
     { ns: "soapenv:mustUnderstand", nsUrl: "0" },
@@ -199,26 +207,25 @@ class ExampleService extends SoapService {
 
   /**
    * 
-   * @param firstParameter the first parameter
-   * @param secondParameter  the second parameter
+   * @param firstParam the first parameter
+   * @param secondParam  the second parameter
    */
-  @Xmlns([{ ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }])
-  @AxiosConfigForMethod({ method: "GET" })
-  @Parameter(0, "firstParameter", [
+  @xmlns([{ ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }])
+  @axiosConfigForMethod({ method: "GET" })
+  @param(0, "firstParam", [
     { ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }
   ])
-  @Parameter(1, "secondParameter")
+  @param(1, "secondParam")
   public GetAdUnitsByStatement(
-    firstParameter: any,
-    secondParameter: any
+    firstParam: any,
+    secondParam: any
   ) {
-    return super.request("GetAdUnitsByStatement", firstParameter, secondParameter)
+    return super.request("GetAdUnitsByStatement", firstParam, secondParam)
   }
 
 
-  @Xmlns([{ ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }])
-  @AxiosConfigForMethod({ method: "POST", url: "https://webservicesample.com/sample.svc/getAnother" })
-  // @Parameter(0, "firstParameter")
+  @xmlns([{ ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }])
+  @axiosConfigForMethod({ method: "POST", url: "https://webservicesample.com/sample.svc/getAnother" })
   public GetAnother() {
     return super.request("GetAnother")
   }
@@ -260,14 +267,17 @@ newService.GetAnother().then(res => {
 weather-service.ts
 
 ``` typescript
-import { AxiosConfig, AxiosConfigForMethod, Envelope, Xmlns, NsType, SoapService } from "another-soap"
+import {
+  axiosConfig, axiosConfigForMethod, envelope,
+ xmlns, NsType, SoapService
+} from "another-soap"
 
-@Envelope([
+@envelope([
   { ns: "xmlns:soap", nsUrl: "http://schemas.xmlsoap.org/soap/envelope/", nsType: NsType.Namespace },
   { ns: "xmlns:xsd", nsUrl: "http://www.w3.org/2001/XMLSchema", nsType: NsType.XMLSchema },
   { ns: "xmlns:xsi", nsUrl: "http://www.w3.org/2001/XMLSchema-instance", nsType: NsType.XMLSchemaInstance }
 ])
-@AxiosConfig({
+@axiosConfig({
   headers: {
     "Host": "www.webxml.com.cn",
   },
@@ -276,25 +286,25 @@ import { AxiosConfig, AxiosConfigForMethod, Envelope, Xmlns, NsType, SoapService
 class WeatherService extends SoapService {
 
 
-  @AxiosConfigForMethod({
+  @axiosConfigForMethod({
     url: "http://ws.webxml.com.cn/WebServices/WeatherWS.asmx/getRegionCountry",
     headers: {
       "SOAPAction": "http://ws.webxml.com.cn/getRegionCountry",
     }
   })
-  @Xmlns([{ ns: "xmlns", nsUrl: "http://ws.webxml.com.cn/" }])
+  @xmlns([{ ns: "xmlns", nsUrl: "http://ws.webxml.com.cn/" }])
   public getRegionCountry() {
     return super.request("getRegionCountry")
   }
 
 
-  @AxiosConfigForMethod({
+  @axiosConfigForMethod({
     url: "http://ws.webxml.com.cn/WebServices/WeatherWS.asmx/getRegionDataset",
     headers: {
       "SOAPAction": "http://ws.webxml.com.cn/getRegionDataset",
     }
   })
-  @Xmlns([{ ns: "xmlns", nsUrl: "http://ws.webxml.com.cn/" }])
+  @xmlns([{ ns: "xmlns", nsUrl: "http://ws.webxml.com.cn/" }])
   public getRegionDataset() {
     return super.request("getRegionDataset")
   }

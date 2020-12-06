@@ -18,26 +18,26 @@ interface IXmlns {
 }
 
 
-interface IParameter {
+interface IParam {
   index: number,
   name: string,
   nsList: IXmlns[]
 }
-function Envelope(nsList: IXmlns[]) {
+function envelope(nsList: IXmlns[]) {
   return <T>(constructor: new () => T): new () => T => {
     constructor.prototype._nsList = nsList
     return constructor
   }
 }
 
-function AxiosConfig(config: AxiosRequestConfig) {
+function axiosConfig(config: AxiosRequestConfig) {
   return <T>(constructor: new () => T): new () => T => {
     constructor.prototype._axiosConfig = config
     return constructor
   }
 }
 
-function Xmlns(nsList: IXmlns[]) {
+function xmlns(nsList: IXmlns[]) {
   return Reflect.metadata("xmlns:" + Math.random(), nsList)
 }
 
@@ -55,20 +55,20 @@ function getXmlns(target: any, propertyKey: string): IXmlns[] {
 /**
  * 
  * @param index the sequence of the paramters
- * @param name the name of the parameters, it will be compiled into request XML
+ * @param name the name of the params, it will be compiled into request XML
  * @param nsList the xmlns definition
  */
-function Parameter(index: number, name: string, nsList: IXmlns[] = []) {
-  return Reflect.metadata("Parameter:" + Math.random(), {
+function param(index: number, name: string, nsList: IXmlns[] = []) {
+  return Reflect.metadata("param:" + Math.random(), {
     index,
     name,
     nsList
   })
 }
 
-function getParameter(target: any, propertyKey: string): IParameter[] {
+function getParam(target: any, propertyKey: string): IParam[] {
   return Reflect.getMetadataKeys(target, propertyKey)
-    .filter(key => ("" + key).startsWith("Parameter:"))
+    .filter(key => ("" + key).startsWith("param:"))
     .map(key => {
 
       return Reflect.getMetadata(key, target, propertyKey)
@@ -76,7 +76,7 @@ function getParameter(target: any, propertyKey: string): IParameter[] {
 }
 
 
-function Protocol(val: string) {
+function protocol(val: string) {
   return <T>(constructor: new () => T): new () => T => {
     constructor.prototype._protocol = val
     return constructor
@@ -84,34 +84,34 @@ function Protocol(val: string) {
 }
 
 
-const AxiosConfigKey = "AxiosConfigKey"
+const axiosConfigKey = "axiosConfigKey"
 
-function AxiosConfigForMethod(config: AxiosRequestConfig = {}) {
-  return Reflect.metadata(AxiosConfigKey, config)
+function axiosConfigForMethod(config: AxiosRequestConfig = {}) {
+  return Reflect.metadata(axiosConfigKey, config)
 }
 
 function getAxiosConfig(target: any, propertyKey: string = "") {
   if (propertyKey)
-    return Reflect.getMetadata(AxiosConfigKey, target, propertyKey) as AxiosRequestConfig
+    return Reflect.getMetadata(axiosConfigKey, target, propertyKey) as AxiosRequestConfig
   else {
-    return Reflect.getMetadata(AxiosConfigKey, target) as AxiosRequestConfig
+    return Reflect.getMetadata(axiosConfigKey, target) as AxiosRequestConfig
   }
 }
 
 
 
 export {
-  Protocol,
-  AxiosConfig,
-  AxiosConfigForMethod,
-  Xmlns,
-  Envelope,
-  Parameter,
+  protocol,
+  axiosConfig,
+  axiosConfigForMethod,
+  xmlns,
+  envelope,
+  param,
   IXmlns,
-  IParameter,
+  IParam,
   NsType,
   getXmlns,
-  getParameter,
+  getParam,
   getAxiosConfig
 }
 

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAxiosConfig = exports.getParameter = exports.getXmlns = exports.NsType = exports.Parameter = exports.Envelope = exports.Xmlns = exports.AxiosConfigForMethod = exports.AxiosConfig = exports.Protocol = void 0;
+exports.getAxiosConfig = exports.getParam = exports.getXmlns = exports.NsType = exports.param = exports.envelope = exports.xmlns = exports.axiosConfigForMethod = exports.axiosConfig = exports.protocol = void 0;
 require("reflect-metadata");
 var NsType;
 (function (NsType) {
@@ -13,24 +13,24 @@ var NsType;
     NsType[NsType["Undefined"] = 6] = "Undefined";
 })(NsType || (NsType = {}));
 exports.NsType = NsType;
-function Envelope(nsList) {
+function envelope(nsList) {
     return function (constructor) {
         constructor.prototype._nsList = nsList;
         return constructor;
     };
 }
-exports.Envelope = Envelope;
-function AxiosConfig(config) {
+exports.envelope = envelope;
+function axiosConfig(config) {
     return function (constructor) {
         constructor.prototype._axiosConfig = config;
         return constructor;
     };
 }
-exports.AxiosConfig = AxiosConfig;
-function Xmlns(nsList) {
+exports.axiosConfig = axiosConfig;
+function xmlns(nsList) {
     return Reflect.metadata("xmlns:" + Math.random(), nsList);
 }
-exports.Xmlns = Xmlns;
+exports.xmlns = xmlns;
 function getXmlns(target, propertyKey) {
     var lists = Reflect.getMetadataKeys(target, propertyKey)
         .filter(function (key) { return ("" + key).startsWith("xmlns:"); })
@@ -43,45 +43,45 @@ exports.getXmlns = getXmlns;
 /**
  *
  * @param index the sequence of the paramters
- * @param name the name of the parameters, it will be compiled into request XML
+ * @param name the name of the params, it will be compiled into request XML
  * @param nsList the xmlns definition
  */
-function Parameter(index, name, nsList) {
+function param(index, name, nsList) {
     if (nsList === void 0) { nsList = []; }
-    return Reflect.metadata("Parameter:" + Math.random(), {
+    return Reflect.metadata("param:" + Math.random(), {
         index: index,
         name: name,
         nsList: nsList
     });
 }
-exports.Parameter = Parameter;
-function getParameter(target, propertyKey) {
+exports.param = param;
+function getParam(target, propertyKey) {
     return Reflect.getMetadataKeys(target, propertyKey)
-        .filter(function (key) { return ("" + key).startsWith("Parameter:"); })
+        .filter(function (key) { return ("" + key).startsWith("param:"); })
         .map(function (key) {
         return Reflect.getMetadata(key, target, propertyKey);
     });
 }
-exports.getParameter = getParameter;
-function Protocol(val) {
+exports.getParam = getParam;
+function protocol(val) {
     return function (constructor) {
         constructor.prototype._protocol = val;
         return constructor;
     };
 }
-exports.Protocol = Protocol;
-var AxiosConfigKey = "AxiosConfigKey";
-function AxiosConfigForMethod(config) {
+exports.protocol = protocol;
+var axiosConfigKey = "axiosConfigKey";
+function axiosConfigForMethod(config) {
     if (config === void 0) { config = {}; }
-    return Reflect.metadata(AxiosConfigKey, config);
+    return Reflect.metadata(axiosConfigKey, config);
 }
-exports.AxiosConfigForMethod = AxiosConfigForMethod;
+exports.axiosConfigForMethod = axiosConfigForMethod;
 function getAxiosConfig(target, propertyKey) {
     if (propertyKey === void 0) { propertyKey = ""; }
     if (propertyKey)
-        return Reflect.getMetadata(AxiosConfigKey, target, propertyKey);
+        return Reflect.getMetadata(axiosConfigKey, target, propertyKey);
     else {
-        return Reflect.getMetadata(AxiosConfigKey, target);
+        return Reflect.getMetadata(axiosConfigKey, target);
     }
 }
 exports.getAxiosConfig = getAxiosConfig;
