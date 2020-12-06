@@ -100,7 +100,7 @@ var SoapService = /** @class */ (function () {
             headers["Content-Type"] = "text/xml; charset=utf-8";
         }
         this._requestXml = requestXml;
-        var options = __assign(__assign({}, def_1.axiosConfig), { headers: headers, data: requestXml, transformResponse: [function (res) {
+        var options = __assign(__assign({}, config), { headers: headers, data: requestXml, transformResponse: [function (res) {
                     if (res)
                         return another_xml2json_1.xml2json(res, {
                             escape: true,

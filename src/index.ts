@@ -87,7 +87,7 @@ class SoapService {
 
     const options: AxiosRequestConfig =
     {
-      ...axiosConfig,
+      ...config,
       headers,
       data: requestXml,
       transformResponse: [(res) => {
@@ -257,4 +257,3 @@ export {
   NsType,
   AxiosRequestConfig
 }
-

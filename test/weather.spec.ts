@@ -2,8 +2,8 @@ import 'mocha'
 import should from 'should'
 import WeatherService from "./weather-service"
 
+const weatherService = new WeatherService()
 describe('Weather request', function () {
-  const weatherService = new WeatherService()
 
   it('request getRegionCountry', function () {
     weatherService.getRegionCountry().then(res => {
