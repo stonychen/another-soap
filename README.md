@@ -1,10 +1,10 @@
 another-soap
-
 =======
 another-soap is another soap package for node js.
 
 # Table of Contents
 
+- [another-soap](#another-soap)
 - [Table of Contents](#table-of-contents)
 - [Getting started](#getting-started)
   - [Install](#install)
@@ -98,11 +98,11 @@ declare function Parameter(index: number, name: string, nsList?: IXmlns[]): {
 
 ## Add a request method
 
-We add `Xmlns` for the method. If there is no, we inherit namespaces from envelope.
+Add `Xmlns` for the method. If there is no, we inherit namespaces from envelope.
 
-We add `AxiosConfigForMethod` for the method, we will combine axios config with which was defined on the class. Maybe the request headers, url or other other options of the method might be different. We just override it here.
+Add `AxiosConfigForMethod` for the method, we will combine axios config with which was defined on the class. Maybe the request headers, url or other other options of the method might be different. We just override it here.
 
-We add `Parameter` for the method. And it should be matched with actual paramters.
+Add `Parameter` for the method. And it should be matched with actual paramters.
 
 ``` typescript
 class ExampleService extends SoapService {
@@ -323,4 +323,4 @@ weatherService.getRegionDataset().then(res => {
 
 ## Console the compiled XML
 
-We can console the compiled xml after call the method `console.log(weatherService.requestXml)`
+We can console the compiled xml after calling the method `console.log(weatherService.requestXml)`
