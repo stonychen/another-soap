@@ -8,6 +8,7 @@ var weatherService = new weather_service_1.default();
 weatherService.getRegionCountry().then(function (res) {
     console.log(res.data);
 });
+console.log(weatherService.requestXml);
 weatherService.getRegionDataset().then(function (res) {
     console.log(res.data);
 });

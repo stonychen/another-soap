@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "dev": "tsc && node dist/src/index.js",
-    "test": "tsc && node dist/test/weather-consum.js",
+    "test": "tsc && node dist/test/weather.js",
     "build": "tsc -b",
     "lint": "eslint src/**"
   },

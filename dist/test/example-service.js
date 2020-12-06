@@ -20,16 +20,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var index_1 = require("../src/index");
-var SampleService = /** @class */ (function (_super) {
-    __extends(SampleService, _super);
-    function SampleService() {
+var ExampleService = /** @class */ (function (_super) {
+    __extends(ExampleService, _super);
+    function ExampleService() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      *
-     * @param RequestHeader the parameters of header section
+     * @param RequestHeader the one of parameters of header section
      */
-    SampleService.prototype.setHeader = function (requestHeader) {
+    ExampleService.prototype.setHeader = function (requestHeader) {
         return _super.prototype.setHeader.call(this, requestHeader);
     };
     /**
@@ -37,42 +37,42 @@ var SampleService = /** @class */ (function (_super) {
      * @param firstParameter the first parameter
      * @param secondParameter  the second parameter
      */
-    SampleService.prototype.GetAdUnitsByStatement = function (firstParameter, secondParameter) {
+    ExampleService.prototype.GetAdUnitsByStatement = function (firstParameter, secondParameter) {
         return _super.prototype.request.call(this, "GetAdUnitsByStatement", firstParameter, secondParameter);
     };
-    SampleService.prototype.GetAnother = function () {
+    ExampleService.prototype.GetAnother = function () {
         return _super.prototype.request.call(this, "GetAnother");
     };
     __decorate([
-        index_1.XmlnsForParameters(0, "RequestHeader", [
+        index_1.Parameter(0, "RequestHeader", [
             { ns: "soapenv:actor", nsUrl: "http://schemas.xmlsoap.org/soap/actor/next" },
             { ns: "soapenv:mustUnderstand", nsUrl: "0" },
             { ns: "xmlns:ns1", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: index_1.NsType.Namespace }
         ])
-    ], SampleService.prototype, "setHeader", null);
+    ], ExampleService.prototype, "setHeader", null);
     __decorate([
-        index_1.XmlnsForMethod([{ ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: index_1.NsType.Namespace }]),
-        index_1.AxiosConfig({ method: "GET" }),
-        index_1.XmlnsForParameters(0, "firstParameter", [
-        // { ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }
+        index_1.Xmlns([{ ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: index_1.NsType.Namespace }]),
+        index_1.AxiosConfigForMethod({ method: "GET" }),
+        index_1.Parameter(0, "firstParameter", [
+            { ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: index_1.NsType.Namespace }
         ]),
-        index_1.XmlnsForParameters(1, "secondParameter")
-    ], SampleService.prototype, "GetAdUnitsByStatement", null);
+        index_1.Parameter(1, "secondParameter")
+    ], ExampleService.prototype, "GetAdUnitsByStatement", null);
     __decorate([
-        index_1.XmlnsForMethod([{ ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: index_1.NsType.Namespace }]),
-        index_1.AxiosConfig({ method: "POST", url: "https://webservicesample.com/sample.svc/getAnother" })
-    ], SampleService.prototype, "GetAnother", null);
-    SampleService = __decorate([
-        index_1.XmlnsForCls([
+        index_1.Xmlns([{ ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: index_1.NsType.Namespace }]),
+        index_1.AxiosConfigForMethod({ method: "POST", url: "https://webservicesample.com/sample.svc/getAnother" })
+    ], ExampleService.prototype, "GetAnother", null);
+    ExampleService = __decorate([
+        index_1.Envelope([
             { ns: "xmlns:soapenv", nsUrl: "http://schemas.xmlsoap.org/soap/envelope/", nsType: index_1.NsType.Namespace },
             { ns: "xmlns:xsd", nsUrl: "http://www.w3.org/2001/XMLSchema", nsType: index_1.NsType.XMLSchema },
             { ns: "xmlns:xsi", nsUrl: "http://www.w3.org/2001/XMLSchema-instance", nsType: index_1.NsType.XMLSchemaInstance }
         ]),
-        index_1.AxiosConfigForCls({
+        index_1.AxiosConfig({
             url: "https://webservicesample.com/sample.svc",
             headers: { "soap-action": "value" }
         })
-    ], SampleService);
-    return SampleService;
+    ], ExampleService);
+    return ExampleService;
 }(index_1.SoapService));
-exports.default = SampleService;
+exports.default = ExampleService;

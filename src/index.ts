@@ -3,10 +3,10 @@ import axios, { AxiosRequestConfig } from "axios"
 import { xml2json } from "another-xml2json"
 import {
   Protocol,
-  AxiosConfig, AxiosConfigForCls,
-  XmlnsForCls, XmlnsForMethod, XmlnsForParameters,
-  IXmlns, IXmlnsForParameters,
-  NsType, getXmlns, getXmlnsForParameters, getAxiosConfig
+  AxiosConfig, AxiosConfigForMethod,
+  Envelope, Xmlns, Parameter,
+  IXmlns, IParameter,
+  NsType, getXmlns, getParameter, getAxiosConfig
 } from "./def"
 
 /**
@@ -16,7 +16,7 @@ import {
 class SoapService {
 
   private header: any[] = []
-  private headerXmlnsList: IXmlnsForParameters[] = []
+  private headerXmlnsList: IParameter[] = []
 
   private protocol: string = ""
   private axiosConfig: AxiosRequestConfig = {}
@@ -24,11 +24,17 @@ class SoapService {
   private nsList: IXmlns[] = []
 
   private _reflectOnce = false
+
+  private _requestXml: string = ""
+
+  public get requestXml(): string {
+    return this._requestXml
+  }
   private _flag: {
     [index: string]: {
       nsList: IXmlns[],
       axiosConfigMethod: AxiosRequestConfig,
-      paramNsList: IXmlnsForParameters[]
+      paramNsList: IParameter[]
     }
   } = {}
 
@@ -42,7 +48,7 @@ class SoapService {
 
     if (!this._flag[method]) {
       const nsList = getXmlns(this, method)
-      const paramNsList = getXmlnsForParameters(this, method)
+      const paramNsList = getParameter(this, method)
       let axiosConfigMethod = getAxiosConfig(this, method)
 
       axiosConfigMethod = Object.assign(axiosConfigMethod, this.axiosConfig)
@@ -60,7 +66,7 @@ class SoapService {
    * @param parameters the parameters of the XML header 
    */
   public setHeader(...parameters: any[]) {
-    const nsList = getXmlnsForParameters(this, "setHeader")
+    const nsList = getParameter(this, "setHeader")
     this.header = parameters
     this.headerXmlnsList = nsList
     return this
@@ -79,6 +85,8 @@ class SoapService {
     if (!headers["Content-Type"]) {
       headers["Content-Type"] = "text/xml; charset=utf-8"
     }
+
+    this._requestXml = requestXml
 
     const options: AxiosRequestConfig =
     {
@@ -112,7 +120,7 @@ class SoapService {
     return `${this.protocol}<${this.ns}:Envelope ${nsStr}>${strHeader + strBody}</${this.ns}:Envelope>`
   }
 
-  private buildSection(method: string, entities: any[], entNS: IXmlnsForParameters[], header: boolean = false) {
+  private buildSection(method: string, entities: any[], entNS: IParameter[], header: boolean = false) {
     let tag = header ? "Header" : "Body"
     tag = this.ns ? this.ns + ":" + tag : tag
 
@@ -138,7 +146,7 @@ class SoapService {
       `<${tag}/>` : `<${tag}>${inner}</${tag}>`
   }
 
-  private encapsulateEntities(entities: any[], paramNSList: IXmlnsForParameters[], methodNs: string = "") {
+  private encapsulateEntities(entities: any[], paramNSList: IParameter[], methodNs: string = "") {
 
     return entities.map((item, index) => {
       const paramNs = paramNSList.find(e => e.index === index)
@@ -242,14 +250,14 @@ class SoapService {
 }
 
 export {
-  AxiosConfig,
-  AxiosConfigForCls,
-  IXmlns,
-  AxiosRequestConfig,
-  XmlnsForCls,
-  XmlnsForMethod,
-  XmlnsForParameters,
   SoapService,
+  Envelope,
+  AxiosConfig,
+  AxiosConfigForMethod,
+  AxiosRequestConfig,
+  IXmlns,
+  Xmlns,
+  Parameter,
   NsType
 }
 

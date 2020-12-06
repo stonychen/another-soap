@@ -14,27 +14,33 @@ interface IXmlns {
     nsUrl: string;
     nsType?: NsType;
 }
-interface IXmlnsForParameters {
+interface IParameter {
     index: number;
     name: string;
     nsList: IXmlns[];
 }
-declare function XmlnsForCls(nsList: IXmlns[]): <T>(constructor: new () => T) => new () => T;
-declare function AxiosConfigForCls(config: AxiosRequestConfig): <T>(constructor: new () => T) => new () => T;
-declare function XmlnsForMethod(nsList: IXmlns[]): {
+declare function Envelope(nsList: IXmlns[]): <T>(constructor: new () => T) => new () => T;
+declare function AxiosConfig(config: AxiosRequestConfig): <T>(constructor: new () => T) => new () => T;
+declare function Xmlns(nsList: IXmlns[]): {
     (target: Function): void;
     (target: Object, propertyKey: string | symbol): void;
 };
 declare function getXmlns(target: any, propertyKey: string): IXmlns[];
-declare function XmlnsForParameters(index: number, name: string, nsList?: IXmlns[]): {
+/**
+ *
+ * @param index the sequence of the paramters
+ * @param name the name of the parameters, it will be compiled into request XML
+ * @param nsList the xmlns definition
+ */
+declare function Parameter(index: number, name: string, nsList?: IXmlns[]): {
     (target: Function): void;
     (target: Object, propertyKey: string | symbol): void;
 };
-declare function getXmlnsForParameters(target: any, propertyKey: string): IXmlnsForParameters[];
+declare function getParameter(target: any, propertyKey: string): IParameter[];
 declare function Protocol(val: string): <T>(constructor: new () => T) => new () => T;
-declare function AxiosConfig(config?: AxiosRequestConfig): {
+declare function AxiosConfigForMethod(config?: AxiosRequestConfig): {
     (target: Function): void;
     (target: Object, propertyKey: string | symbol): void;
 };
 declare function getAxiosConfig(target: any, propertyKey?: string): AxiosRequestConfig;
-export { Protocol, AxiosConfig, AxiosConfigForCls, XmlnsForMethod, XmlnsForCls, XmlnsForParameters, IXmlns, IXmlnsForParameters, NsType, getXmlns, getXmlnsForParameters, getAxiosConfig };
+export { Protocol, AxiosConfig, AxiosConfigForMethod, Xmlns, Envelope, Parameter, IXmlns, IParameter, NsType, getXmlns, getParameter, getAxiosConfig };

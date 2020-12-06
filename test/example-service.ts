@@ -1,22 +1,22 @@
-import { AxiosConfig, AxiosConfigForCls, XmlnsForMethod, XmlnsForCls, XmlnsForParameters, NsType, SoapService } from "../src/index"
+import { AxiosConfig, AxiosConfigForMethod, Xmlns, Envelope, Parameter, NsType, SoapService } from "../src/index"
 
 
-@XmlnsForCls([
+@Envelope([
   { ns: "xmlns:soapenv", nsUrl: "http://schemas.xmlsoap.org/soap/envelope/", nsType: NsType.Namespace },
   { ns: "xmlns:xsd", nsUrl: "http://www.w3.org/2001/XMLSchema", nsType: NsType.XMLSchema },
   { ns: "xmlns:xsi", nsUrl: "http://www.w3.org/2001/XMLSchema-instance", nsType: NsType.XMLSchemaInstance }
 ])
-@AxiosConfigForCls({
+@AxiosConfig({
   url: "https://webservicesample.com/sample.svc",
   headers: { "soap-action": "value" }
 })
-class SampleService extends SoapService {
+class ExampleService extends SoapService {
 
   /**
    * 
-   * @param RequestHeader the parameters of header section
+   * @param RequestHeader the one of parameters of header section
    */
-  @XmlnsForParameters(
+  @Parameter(
     0, "RequestHeader", [
     { ns: "soapenv:actor", nsUrl: "http://schemas.xmlsoap.org/soap/actor/next" },
     { ns: "soapenv:mustUnderstand", nsUrl: "0" },
@@ -31,12 +31,12 @@ class SampleService extends SoapService {
    * @param firstParameter the first parameter
    * @param secondParameter  the second parameter
    */
-  @XmlnsForMethod([{ ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }])
-  @AxiosConfig({ method: "GET" })
-  @XmlnsForParameters(0, "firstParameter", [
-    // { ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }
+  @Xmlns([{ ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }])
+  @AxiosConfigForMethod({ method: "GET" })
+  @Parameter(0, "firstParameter", [
+    { ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }
   ])
-  @XmlnsForParameters(1, "secondParameter")
+  @Parameter(1, "secondParameter")
   public GetAdUnitsByStatement(
     firstParameter: any,
     secondParameter: any
@@ -45,12 +45,12 @@ class SampleService extends SoapService {
   }
 
 
-  @XmlnsForMethod([{ ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }])
-  @AxiosConfig({ method: "POST", url: "https://webservicesample.com/sample.svc/getAnother" })
-  // @XmlnsForParameters(0, "firstParameter")
+  @Xmlns([{ ns: "xmlns", nsUrl: "https://www.google.com/apis/ads/publisher/v202011", nsType: NsType.Namespace }])
+  @AxiosConfigForMethod({ method: "POST", url: "https://webservicesample.com/sample.svc/getAnother" })
+  // @Parameter(0, "firstParameter")
   public GetAnother() {
     return super.request("GetAnother")
   }
 }
 
-export default SampleService
+export default ExampleService

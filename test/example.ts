@@ -1,6 +1,6 @@
-import SampleService from "./sample-service"
+import ExampleService from "./example-service"
 
-const newService = new SampleService().setHeader({
+const newService = new ExampleService().setHeader({
   networkCode: "networkCode",
   applicationName: "applicationName"
 })

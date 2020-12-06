@@ -32,25 +32,25 @@ var WeatherService = /** @class */ (function (_super) {
         return _super.prototype.request.call(this, "getRegionDataset");
     };
     __decorate([
-        index_1.AxiosConfig({
+        index_1.AxiosConfigForMethod({
             url: "http://ws.webxml.com.cn/WebServices/WeatherWS.asmx/getRegionCountry",
             headers: {
                 "SOAPAction": "http://ws.webxml.com.cn/getRegionCountry",
             }
         }),
-        index_1.XmlnsForMethod([{ ns: "xmlns", nsUrl: "http://ws.webxml.com.cn/" }])
+        index_1.Xmlns([{ ns: "xmlns", nsUrl: "http://ws.webxml.com.cn/" }])
     ], WeatherService.prototype, "getRegionCountry", null);
     __decorate([
-        index_1.AxiosConfig({
+        index_1.AxiosConfigForMethod({
             url: "http://ws.webxml.com.cn/WebServices/WeatherWS.asmx/getRegionDataset",
             headers: {
                 "SOAPAction": "http://ws.webxml.com.cn/getRegionDataset",
             }
         }),
-        index_1.XmlnsForMethod([{ ns: "xmlns", nsUrl: "http://ws.webxml.com.cn/" }])
+        index_1.Xmlns([{ ns: "xmlns", nsUrl: "http://ws.webxml.com.cn/" }])
     ], WeatherService.prototype, "getRegionDataset", null);
     WeatherService = __decorate([
-        index_1.XmlnsForCls([
+        index_1.Envelope([
             { ns: "xmlns:soap", nsUrl: "http://schemas.xmlsoap.org/soap/envelope/", nsType: index_1.NsType.Namespace },
             { ns: "xmlns:xsd", nsUrl: "http://www.w3.org/2001/XMLSchema", nsType: index_1.NsType.XMLSchema },
             { ns: "xmlns:xsi", nsUrl: "http://www.w3.org/2001/XMLSchema-instance", nsType: index_1.NsType.XMLSchemaInstance }
