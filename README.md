@@ -12,17 +12,17 @@ another-soap is another soap package for node js.
   - [Define Header section](#define-header-section)
   - [Add a request method](#add-a-request-method)
   - [Consume the service](#consume-the-service)
-  - [Example 1](#example-1)
-  - [Example 2](#example-2)
-  - [Console the compiled XML](#console-the-compiled-xml)
-  - [MIT License](#mit-license)
+- [Example 1](#example-1)
+- [Example 2](#example-2)
+- [Check the request XML](#check-the-request-xml)
+- [MIT License](#mit-license)
 
 
 # Getting started
 
 ## Install
 
-`another-soap` is installed and included like any other node module:
+`another-soap` is installed like any other node module:
 
 ``` cmd
 npm install another-soap -save
@@ -164,7 +164,7 @@ newService.GetAdUnitsByStatement({
 })
 ```
 
-## Example 1
+# Example 1
 
 example-service.ts
 
@@ -255,7 +255,7 @@ newService.GetAnother().then(res => {
 
 ```
 
-## Example 2
+# Example 2
 
 weather-service.ts
 
@@ -322,12 +322,11 @@ weatherService.getRegionDataset().then(res => {
 
 ```
 
-## Console the compiled XML
+# Check the request XML
 
-We can console the compiled xml after calling the method `console.log(weatherService.requestXml)`
+We can check the compiled xml after calling the method `console.log(weatherService.requestXml)`
 
-
-## MIT License
+# MIT License
 
 Copyright (c) 2020 Stony Chen
 
